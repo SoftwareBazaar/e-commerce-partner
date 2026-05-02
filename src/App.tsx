@@ -39,8 +39,10 @@ const App = () => (
             </Route>
           </Routes>
         </CartProvider>
-      </Sonner>
       </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
     </TooltipProvider>
   </QueryClientProvider>
 );
