@@ -14,16 +14,300 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string
+          email: string
+          experience: string | null
+          full_name: string
+          goals: string | null
+          id: string
+          notes: string | null
+          package_slug: string
+          phone: string | null
+          preferred_date: string | null
+          preferred_time: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          experience?: string | null
+          full_name: string
+          goals?: string | null
+          id?: string
+          notes?: string | null
+          package_slug: string
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          experience?: string | null
+          full_name?: string
+          goals?: string | null
+          id?: string
+          notes?: string | null
+          package_slug?: string
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          message: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          message: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
+      ea_requests: {
+        Row: {
+          budget: string | null
+          created_at: string
+          deadline: string | null
+          email: string
+          entry_rules: string | null
+          exit_rules: string | null
+          full_name: string
+          id: string
+          indicators: string | null
+          notes: string | null
+          pairs: string | null
+          phone: string | null
+          risk_preferences: string | null
+          status: string
+          strategy: string
+          timeframes: string | null
+          user_id: string | null
+        }
+        Insert: {
+          budget?: string | null
+          created_at?: string
+          deadline?: string | null
+          email: string
+          entry_rules?: string | null
+          exit_rules?: string | null
+          full_name: string
+          id?: string
+          indicators?: string | null
+          notes?: string | null
+          pairs?: string | null
+          phone?: string | null
+          risk_preferences?: string | null
+          status?: string
+          strategy: string
+          timeframes?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          budget?: string | null
+          created_at?: string
+          deadline?: string | null
+          email?: string
+          entry_rules?: string | null
+          exit_rules?: string | null
+          full_name?: string
+          id?: string
+          indicators?: string | null
+          notes?: string | null
+          pairs?: string | null
+          phone?: string | null
+          risk_preferences?: string | null
+          status?: string
+          strategy?: string
+          timeframes?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          active: boolean
+          buy_price: number
+          category: string
+          compatibility: string
+          created_at: string
+          description: string | null
+          featured: boolean | null
+          id: string
+          image_url: string | null
+          name: string
+          pairs: string[] | null
+          rating: number | null
+          rent_price: number | null
+          reviews: number | null
+          short_description: string | null
+          slug: string
+          tags: string[] | null
+          timeframes: string[] | null
+          updated_at: string
+          youtube_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          buy_price?: number
+          category: string
+          compatibility: string
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          name: string
+          pairs?: string[] | null
+          rating?: number | null
+          rent_price?: number | null
+          reviews?: number | null
+          short_description?: string | null
+          slug: string
+          tags?: string[] | null
+          timeframes?: string[] | null
+          updated_at?: string
+          youtube_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          buy_price?: number
+          category?: string
+          compatibility?: string
+          created_at?: string
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          pairs?: string[] | null
+          rating?: number | null
+          rent_price?: number | null
+          reviews?: number | null
+          short_description?: string | null
+          slug?: string
+          tags?: string[] | null
+          timeframes?: string[] | null
+          updated_at?: string
+          youtube_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          country: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +434,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
