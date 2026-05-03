@@ -5,16 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ProductCard } from "@/components/ProductCard";
-import { getProduct, products } from "@/data/products";
+import { useProducts } from "@/hooks/use-products";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 
 const ProductDetail = () => {
   const { slug } = useParams();
-  const product = slug ? getProduct(slug) : undefined;
+  const { products, loading } = useProducts();
+  const product = products.find((p) => p.slug === slug);
   const { add } = useCart();
   const [mode, setMode] = useState<"buy" | "rent">("buy");
 
+  if (loading) return <div className="container-tight py-32 text-center text-muted-foreground">Loading...</div>;
   if (!product) return <Navigate to="/marketplace" replace />;
 
   const related = products.filter((p) => p.slug !== product.slug && p.category === product.category).slice(0, 3);

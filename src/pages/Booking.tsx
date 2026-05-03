@@ -8,18 +8,38 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { packages } from "@/data/site";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 const Booking = () => {
   const [params] = useSearchParams();
   const [submitted, setSubmitted] = useState(false);
+  const [busy, setBusy] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const initialPkg = params.get("package") ?? packages[0].slug;
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    console.info("[Booking submission]", data);
+    setBusy(true);
+    const fd = new FormData(e.currentTarget);
+    const { error } = await supabase.from("bookings").insert({
+      user_id: user?.id ?? null,
+      package_slug: String(fd.get("package")),
+      full_name: String(fd.get("name")),
+      email: String(fd.get("email")),
+      phone: String(fd.get("phone") || ""),
+      preferred_date: String(fd.get("date")),
+      preferred_time: String(fd.get("time") || ""),
+      experience: String(fd.get("experience")),
+      goals: String(fd.get("goals")),
+    });
+    setBusy(false);
+    if (error) {
+      toast({ title: "Booking failed", description: error.message, variant: "destructive" });
+      return;
+    }
     toast({ title: "Booking received", description: "You'll receive a confirmation email shortly." });
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -105,8 +125,8 @@ const Booking = () => {
               <Textarea id="goals" name="goals" required rows={4} className="mt-1.5 bg-input border-border" placeholder="e.g. Build a consistent strategy, prep for a prop-firm challenge, learn SMC..." />
             </div>
 
-            <Button type="submit" size="lg" className="w-full bg-gradient-primary text-primary-foreground glow-primary">
-              Confirm Booking
+            <Button type="submit" disabled={busy} size="lg" className="w-full bg-gradient-primary text-primary-foreground glow-primary">
+              {busy ? "Booking..." : "Confirm Booking"}
             </Button>
             <p className="text-xs text-center text-muted-foreground">
               Sessions are held on Google Meet. You'll receive the link by email.

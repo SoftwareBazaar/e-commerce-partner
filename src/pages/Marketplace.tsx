@@ -2,13 +2,15 @@ import { useMemo, useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { products, type ProductCategory, type Compatibility } from "@/data/products";
+import { type ProductCategory, type Compatibility } from "@/data/products";
+import { useProducts } from "@/hooks/use-products";
 import { cn } from "@/lib/utils";
 
 const categories: ("All" | ProductCategory)[] = ["All", "EA", "Indicator", "Bot", "Bundle"];
 const compats: ("All" | Compatibility)[] = ["All", "MT4", "MT5", "Both"];
 
 const Marketplace = () => {
+  const { products } = useProducts();
   const [cat, setCat] = useState<(typeof categories)[number]>("All");
   const [compat, setCompat] = useState<(typeof compats)[number]>("All");
   const [sort, setSort] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
@@ -25,7 +27,7 @@ const Marketplace = () => {
       default: list = [...list].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
     }
     return list;
-  }, [cat, compat, sort]);
+  }, [products, cat, compat, sort]);
 
   return (
     <>
