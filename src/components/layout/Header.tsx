@@ -1,9 +1,10 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Menu, ShoppingCart, TrendingUp } from "lucide-react";
+import { LayoutDashboard, Menu, ShoppingCart, TrendingUp, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -17,6 +18,7 @@ const nav = [
 
 export const Header = () => {
   const { count, setOpen } = useCart();
+  const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { pathname } = useLocation();
@@ -85,6 +87,16 @@ export const Header = () => {
             )}
           </Button>
 
+          {user ? (
+            <Button asChild variant="ghost" size="icon" aria-label="Dashboard" className="hidden md:inline-flex">
+              <Link to="/dashboard"><LayoutDashboard className="h-5 w-5" /></Link>
+            </Button>
+          ) : (
+            <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
+              <Link to="/auth"><User className="h-4 w-4 mr-1" /> Sign In</Link>
+            </Button>
+          )}
+
           <Button asChild className="hidden md:inline-flex bg-gradient-primary text-primary-foreground hover:opacity-90">
             <Link to="/booking">Book Free Call</Link>
           </Button>
@@ -114,7 +126,10 @@ export const Header = () => {
                     {n.label}
                   </NavLink>
                 ))}
-                <Button asChild className="mt-4 bg-gradient-primary text-primary-foreground">
+                <Button asChild variant="outline" className="mt-4">
+                  <Link to={user ? "/dashboard" : "/auth"}>{user ? "My Dashboard" : "Sign In"}</Link>
+                </Button>
+                <Button asChild className="bg-gradient-primary text-primary-foreground">
                   <Link to="/booking">Book Free Call</Link>
                 </Button>
               </div>
