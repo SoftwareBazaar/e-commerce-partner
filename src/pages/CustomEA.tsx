@@ -6,15 +6,39 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 const CustomEA = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [busy, setBusy] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    console.info("[CustomEA submission]", data);
+    setBusy(true);
+    const fd = new FormData(e.currentTarget);
+    const { error } = await supabase.from("ea_requests").insert({
+      user_id: user?.id ?? null,
+      full_name: String(fd.get("name")),
+      email: String(fd.get("email")),
+      phone: String(fd.get("phone") || ""),
+      strategy: String(fd.get("strategy")),
+      entry_rules: String(fd.get("entry") || ""),
+      exit_rules: String(fd.get("exit") || ""),
+      indicators: String(fd.get("indicators") || ""),
+      risk_preferences: `Lot: ${fd.get("lot") || ""} | SL/TP: ${fd.get("sltp") || ""}`,
+      pairs: String(fd.get("pairs") || ""),
+      timeframes: String(fd.get("timeframes") || ""),
+      deadline: String(fd.get("deadline") || ""),
+      budget: String(fd.get("budget") || ""),
+    });
+    setBusy(false);
+    if (error) {
+      toast({ title: "Submission failed", description: error.message, variant: "destructive" });
+      return;
+    }
     toast({ title: "Request received", description: "We'll review and get back within 24 hours." });
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -151,8 +175,8 @@ const CustomEA = () => {
               </div>
             </fieldset>
 
-            <Button type="submit" size="lg" className="w-full bg-gradient-primary text-primary-foreground glow-primary">
-              Submit Request
+            <Button type="submit" disabled={busy} size="lg" className="w-full bg-gradient-primary text-primary-foreground glow-primary">
+              {busy ? "Submitting..." : "Submit Request"}
             </Button>
           </form>
         </div>

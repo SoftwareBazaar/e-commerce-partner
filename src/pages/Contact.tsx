@@ -7,15 +7,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SOCIALS } from "@/data/site";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
   const { toast } = useToast();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    console.info("[Contact submission]", data);
+    setBusy(true);
+    const fd = new FormData(e.currentTarget);
+    const { error } = await supabase.from("contact_messages").insert({
+      full_name: String(fd.get("name")),
+      email: String(fd.get("email")),
+      subject: String(fd.get("subject") || ""),
+      message: String(fd.get("message")),
+    });
+    setBusy(false);
+    if (error) {
+      toast({ title: "Failed", description: error.message, variant: "destructive" });
+      return;
+    }
     toast({ title: "Message sent", description: "We'll reply within 24 hours." });
     setSent(true);
   };
@@ -64,8 +77,8 @@ const Contact = () => {
                   <Label htmlFor="message">Message *</Label>
                   <Textarea id="message" name="message" required rows={6} className="mt-1.5 bg-input border-border" />
                 </div>
-                <Button type="submit" size="lg" className="w-full bg-gradient-primary text-primary-foreground">
-                  <Send className="h-4 w-4 mr-2" /> Send Message
+                <Button type="submit" disabled={busy} size="lg" className="w-full bg-gradient-primary text-primary-foreground">
+                  <Send className="h-4 w-4 mr-2" /> {busy ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             )}
