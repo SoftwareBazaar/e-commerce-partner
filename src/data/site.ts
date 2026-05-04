@@ -6,13 +6,20 @@ export interface Testimonial {
   role?: string;
 }
 
+export const BRAND = {
+  name: "NeuroAlgo",
+  suffix: "Forex Edge",
+  tagline: "Intelligent Trading. Decisive Edge.",
+  full: "NeuroAlgo Forex Edge",
+};
+
 export const testimonials: Testimonial[] = [
   {
     name: "James M.",
     country: "Kenya",
     rating: 5,
     role: "Prop-firm trader",
-    text: "Apex Scalper EA passed my FTMO challenge in 9 days. The risk management is rock solid and Robert's support is unreal.",
+    text: "Apex Scalper EA passed my FTMO challenge in 9 days. The risk management is rock solid and the support is unreal.",
   },
   {
     name: "Aisha K.",
@@ -26,7 +33,7 @@ export const testimonials: Testimonial[] = [
     country: "Nigeria",
     rating: 5,
     role: "Beginner",
-    text: "Started from zero with Robert's mentorship. Three months in I'm consistently profitable. Worth every dollar.",
+    text: "Started from zero with NeuroAlgo's mentorship. Three months in I'm consistently profitable. Worth every dollar.",
   },
   {
     name: "Sophie L.",
@@ -40,7 +47,7 @@ export const testimonials: Testimonial[] = [
     country: "Spain",
     rating: 5,
     role: "Algo trader",
-    text: "Robert built me a custom EA in two weeks. Clean code, well documented, performs exactly as agreed. Pro level.",
+    text: "NeuroAlgo built me a custom EA in two weeks. Clean code, well documented, performs exactly as agreed. Pro level.",
   },
 ];
 
@@ -76,7 +83,7 @@ export const packages: MentorshipPackage[] = [
     duration: "30 min",
     price: "Free",
     delivery: "Google Meet",
-    description: "Tell me about your trading goals and find out exactly which tool or path is right for you.",
+    description: "Tell us about your trading goals and find out exactly which tool or path is right for you.",
     features: ["Goal assessment", "Tool recommendation", "Honest, no-pressure advice"],
   },
   {
@@ -111,11 +118,11 @@ export const packages: MentorshipPackage[] = [
 
 export const SOCIALS = {
   whatsapp: "https://wa.me/254700000000",
-  telegram: "https://t.me/smartalgosts",
-  instagram: "https://instagram.com/smartalgosts",
-  youtube: "https://youtube.com/@smartalgosts",
-  tiktok: "https://tiktok.com/@smartalgosts",
-  twitter: "https://x.com/smartalgosts",
-  facebook: "https://facebook.com/smartalgosts",
-  email: "hello@smartalgosts.com",
+  telegram: "https://t.me/neuroalgo",
+  instagram: "https://instagram.com/neuroalgo",
+  youtube: "https://youtube.com/@neuroalgo",
+  tiktok: "https://tiktok.com/@neuroalgo",
+  twitter: "https://x.com/neuroalgo",
+  facebook: "https://facebook.com/neuroalgo",
+  email: "hello@neuroalgo.com",
 };

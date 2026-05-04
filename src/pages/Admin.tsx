@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,121 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2 } from "lucide-react";
+import { ImagePlus, Pencil, Plus, Trash2, Upload } from "lucide-react";
+
+type Product = {
+  id?: string;
+  slug: string;
+  name: string;
+  category: string;
+  compatibility: string;
+  short_description?: string;
+  description?: string;
+  buy_price: number;
+  rent_price?: number | null;
+  image_url?: string | null;
+  featured?: boolean;
+  active?: boolean;
+};
+
+const emptyProduct: Product = {
+  slug: "",
+  name: "",
+  category: "EA",
+  compatibility: "MT5",
+  short_description: "",
+  description: "",
+  buy_price: 0,
+  rent_price: null,
+  image_url: "",
+  featured: false,
+  active: true,
+};
+
+const ProductForm = ({ initial, onDone }: { initial: Product; onDone: () => void }) => {
+  const { toast } = useToast();
+  const [p, setP] = useState<Product>(initial);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const upload = async (file: File) => {
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("product-images").upload(path, file, { upsert: false });
+    setUploading(false);
+    if (error) { toast({ title: "Upload failed", description: error.message, variant: "destructive" }); return; }
+    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+    setP({ ...p, image_url: data.publicUrl });
+    toast({ title: "Image uploaded" });
+  };
+
+  const save = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      slug: p.slug, name: p.name, category: p.category, compatibility: p.compatibility,
+      short_description: p.short_description, description: p.description,
+      buy_price: Number(p.buy_price), rent_price: p.rent_price ? Number(p.rent_price) : null,
+      image_url: p.image_url || null, featured: !!p.featured, active: p.active !== false,
+    };
+    const { error } = p.id
+      ? await supabase.from("products").update(payload).eq("id", p.id)
+      : await supabase.from("products").insert(payload);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: p.id ? "Product updated" : "Product created" }); onDone(); }
+  };
+
+  return (
+    <form onSubmit={save} className="space-y-3">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div><Label>Slug</Label><Input required value={p.slug} onChange={(e) => setP({ ...p, slug: e.target.value })} className="mt-1 bg-input" /></div>
+        <div><Label>Name</Label><Input required value={p.name} onChange={(e) => setP({ ...p, name: e.target.value })} className="mt-1 bg-input" /></div>
+        <div><Label>Category</Label>
+          <select value={p.category} onChange={(e) => setP({ ...p, category: e.target.value })} className="mt-1 w-full h-10 rounded-md border border-border bg-input px-3 text-sm">
+            <option>EA</option><option>Indicator</option><option>Bot</option><option>Bundle</option>
+          </select>
+        </div>
+        <div><Label>Compatibility</Label>
+          <select value={p.compatibility} onChange={(e) => setP({ ...p, compatibility: e.target.value })} className="mt-1 w-full h-10 rounded-md border border-border bg-input px-3 text-sm">
+            <option>MT4</option><option>MT5</option><option>Both</option>
+          </select>
+        </div>
+        <div><Label>Buy Price ($)</Label><Input type="number" step="0.01" required value={p.buy_price} onChange={(e) => setP({ ...p, buy_price: Number(e.target.value) })} className="mt-1 bg-input" /></div>
+        <div><Label>Rent Price ($/mo)</Label><Input type="number" step="0.01" value={p.rent_price ?? ""} onChange={(e) => setP({ ...p, rent_price: e.target.value ? Number(e.target.value) : null })} className="mt-1 bg-input" /></div>
+      </div>
+
+      <div>
+        <Label>Product Image</Label>
+        <div className="mt-1.5 flex items-center gap-3">
+          {p.image_url ? (
+            <img src={p.image_url} alt="" className="h-20 w-32 rounded-lg object-cover border border-border" />
+          ) : (
+            <div className="h-20 w-32 rounded-lg border border-dashed border-border flex items-center justify-center text-muted-foreground">
+              <ImagePlus className="h-6 w-6" />
+            </div>
+          )}
+          <div className="flex-1 space-y-2">
+            <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
+            <Button type="button" variant="outline" size="sm" onClick={() => fileRef.current?.click()} disabled={uploading}>
+              <Upload className="h-3.5 w-3.5 mr-1.5" /> {uploading ? "Uploading..." : "Upload Image"}
+            </Button>
+            <Input placeholder="Or paste image URL" value={p.image_url ?? ""} onChange={(e) => setP({ ...p, image_url: e.target.value })} className="bg-input text-xs" />
+          </div>
+        </div>
+      </div>
+
+      <div><Label>Short description</Label><Input value={p.short_description ?? ""} onChange={(e) => setP({ ...p, short_description: e.target.value })} className="mt-1 bg-input" /></div>
+      <div><Label>Description</Label><Textarea rows={4} value={p.description ?? ""} onChange={(e) => setP({ ...p, description: e.target.value })} className="mt-1 bg-input" /></div>
+
+      <div className="flex items-center gap-4 text-sm">
+        <label className="flex items-center gap-2"><input type="checkbox" checked={!!p.featured} onChange={(e) => setP({ ...p, featured: e.target.checked })} /> Featured</label>
+        <label className="flex items-center gap-2"><input type="checkbox" checked={p.active !== false} onChange={(e) => setP({ ...p, active: e.target.checked })} /> Active</label>
+      </div>
+
+      <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">{p.id ? "Save changes" : "Create product"}</Button>
+    </form>
+  );
+};
 
 const Admin = () => {
   const { toast } = useToast();
@@ -16,7 +130,7 @@ const Admin = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
-  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<Product | null>(null);
 
   const refresh = async () => {
     const [p, r, b, m] = await Promise.all([
@@ -33,28 +147,11 @@ const Admin = () => {
 
   useEffect(() => { refresh(); }, []);
 
-  const addProduct = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const { error } = await supabase.from("products").insert({
-      slug: String(fd.get("slug")),
-      name: String(fd.get("name")),
-      category: String(fd.get("category")),
-      compatibility: String(fd.get("compatibility")),
-      short_description: String(fd.get("short_description")),
-      description: String(fd.get("description")),
-      buy_price: Number(fd.get("buy_price")),
-      rent_price: fd.get("rent_price") ? Number(fd.get("rent_price")) : null,
-      featured: fd.get("featured") === "on",
-    });
-    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-    else { toast({ title: "Product added" }); setOpen(false); refresh(); }
-  };
-
   const deleteProduct = async (id: string) => {
     if (!confirm("Delete this product?")) return;
     const { error } = await supabase.from("products").delete().eq("id", id);
-    if (!error) refresh();
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else refresh();
   };
 
   const setStatus = async (table: "ea_requests" | "bookings", id: string, status: string) => {
@@ -65,7 +162,23 @@ const Admin = () => {
   return (
     <section className="py-12">
       <div className="container-tight">
-        <h1 className="font-display text-3xl font-bold mb-8">Admin Panel</h1>
+        <div className="flex items-center justify-between flex-wrap gap-3 mb-8">
+          <div>
+            <h1 className="font-display text-3xl font-bold">Admin Panel</h1>
+            <p className="text-sm text-muted-foreground">Manage products, requests, bookings and messages.</p>
+          </div>
+          <Button onClick={() => setEditing(emptyProduct)} className="bg-gradient-primary text-primary-foreground">
+            <Plus className="h-4 w-4 mr-1.5" /> New Product
+          </Button>
+        </div>
+
+        <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+            <DialogHeader><DialogTitle>{editing?.id ? "Edit Product" : "New Product"}</DialogTitle></DialogHeader>
+            {editing && <ProductForm initial={editing} onDone={() => { setEditing(null); refresh(); }} />}
+          </DialogContent>
+        </Dialog>
+
         <Tabs defaultValue="products">
           <TabsList>
             <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
@@ -75,41 +188,24 @@ const Admin = () => {
           </TabsList>
 
           <TabsContent value="products" className="mt-6 space-y-3">
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild><Button className="bg-gradient-primary text-primary-foreground"><Plus className="h-4 w-4" /> New Product</Button></DialogTrigger>
-              <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-                <DialogHeader><DialogTitle>New Product</DialogTitle></DialogHeader>
-                <form onSubmit={addProduct} className="space-y-3">
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div><Label>Slug</Label><Input name="slug" required className="mt-1 bg-input" /></div>
-                    <div><Label>Name</Label><Input name="name" required className="mt-1 bg-input" /></div>
-                    <div><Label>Category</Label>
-                      <select name="category" required className="mt-1 w-full h-10 rounded-md border border-border bg-input px-3 text-sm">
-                        <option>EA</option><option>Indicator</option><option>Bot</option><option>Bundle</option>
-                      </select>
-                    </div>
-                    <div><Label>Compatibility</Label>
-                      <select name="compatibility" required className="mt-1 w-full h-10 rounded-md border border-border bg-input px-3 text-sm">
-                        <option>MT4</option><option>MT5</option><option>Both</option>
-                      </select>
-                    </div>
-                    <div><Label>Buy Price</Label><Input name="buy_price" type="number" step="0.01" required className="mt-1 bg-input" /></div>
-                    <div><Label>Rent Price</Label><Input name="rent_price" type="number" step="0.01" className="mt-1 bg-input" /></div>
-                  </div>
-                  <div><Label>Short description</Label><Input name="short_description" className="mt-1 bg-input" /></div>
-                  <div><Label>Description</Label><Textarea name="description" rows={4} className="mt-1 bg-input" /></div>
-                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="featured" /> Featured</label>
-                  <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">Create</Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+            {products.length === 0 && <p className="text-muted-foreground text-sm">No products yet — click "New Product" to add one.</p>}
             {products.map((p) => (
-              <div key={p.id} className="flex justify-between items-center rounded-xl border border-border bg-gradient-card p-4">
-                <div>
-                  <p className="font-semibold">{p.name} <Badge variant="outline" className="ml-2">{p.category}</Badge></p>
-                  <p className="text-xs text-muted-foreground">${p.buy_price} • {p.compatibility}</p>
+              <div key={p.id} className="flex justify-between items-center gap-3 rounded-xl border border-border bg-gradient-card p-4">
+                <div className="flex items-center gap-3 min-w-0">
+                  {p.image_url ? (
+                    <img src={p.image_url} alt="" className="h-14 w-20 rounded-lg object-cover border border-border" />
+                  ) : (
+                    <div className="h-14 w-20 rounded-lg border border-dashed border-border flex items-center justify-center text-muted-foreground"><ImagePlus className="h-4 w-4" /></div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="font-semibold truncate">{p.name} <Badge variant="outline" className="ml-1">{p.category}</Badge>{p.featured && <Badge className="ml-1 bg-primary/20 text-primary border-primary/40">Featured</Badge>}</p>
+                    <p className="text-xs text-muted-foreground">${p.buy_price} • {p.compatibility} • /{p.slug}</p>
+                  </div>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => deleteProduct(p.id)}><Trash2 className="h-4 w-4" /></Button>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" onClick={() => setEditing(p)} aria-label="Edit"><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => deleteProduct(p.id)} aria-label="Delete"><Trash2 className="h-4 w-4" /></Button>
+                </div>
               </div>
             ))}
           </TabsContent>
@@ -120,7 +216,7 @@ const Admin = () => {
                 <div className="flex justify-between gap-4 flex-wrap">
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold">{r.full_name} • {r.email}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{r.strategy}</p>
+                    <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">{r.strategy}</p>
                     <p className="text-xs text-muted-foreground mt-2">Budget: {r.budget} • {new Date(r.created_at).toLocaleString()}</p>
                   </div>
                   <select value={r.status} onChange={(e) => setStatus("ea_requests", r.id, e.target.value)} className="h-9 rounded-md border border-border bg-input px-2 text-sm">

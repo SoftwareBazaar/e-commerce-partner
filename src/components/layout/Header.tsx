@@ -1,10 +1,11 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { LayoutDashboard, Menu, ShoppingCart, TrendingUp, User } from "lucide-react";
+import { LayoutDashboard, Menu, ShieldCheck, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { Brand } from "@/components/Brand";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -18,7 +19,7 @@ const nav = [
 
 export const Header = () => {
   const { count, setOpen } = useCart();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { pathname } = useLocation();
@@ -42,13 +43,8 @@ export const Header = () => {
       )}
     >
       <div className="container-tight flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary glow-primary">
-            <TrendingUp className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
-          </div>
-          <span className="font-display text-lg font-bold tracking-tight">
-            Smart<span className="text-primary">Algos</span>
-          </span>
+        <Link to="/" className="flex items-center group" aria-label="NeuroAlgo Forex Edge home">
+          <Brand size={36} />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -86,6 +82,12 @@ export const Header = () => {
               </span>
             )}
           </Button>
+
+          {isAdmin && (
+            <Button asChild variant="ghost" size="icon" aria-label="Admin panel" className="hidden md:inline-flex text-primary">
+              <Link to="/admin"><ShieldCheck className="h-5 w-5" /></Link>
+            </Button>
+          )}
 
           {user ? (
             <Button asChild variant="ghost" size="icon" aria-label="Dashboard" className="hidden md:inline-flex">
@@ -129,6 +131,11 @@ export const Header = () => {
                 <Button asChild variant="outline" className="mt-4">
                   <Link to={user ? "/dashboard" : "/auth"}>{user ? "My Dashboard" : "Sign In"}</Link>
                 </Button>
+                {isAdmin && (
+                  <Button asChild variant="outline" className="border-primary text-primary">
+                    <Link to="/admin"><ShieldCheck className="h-4 w-4 mr-1.5" /> Admin Panel</Link>
+                  </Button>
+                )}
                 <Button asChild className="bg-gradient-primary text-primary-foreground">
                   <Link to="/booking">Book Free Call</Link>
                 </Button>

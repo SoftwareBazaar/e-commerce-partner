@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Mail, MessageCircle, Send, TrendingUp, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram, Mail, MessageCircle, Send, Twitter, Youtube } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SOCIALS } from "@/data/site";
+import { Brand } from "@/components/Brand";
+import { BRAND, SOCIALS } from "@/data/site";
 
 const SocialLink = ({ href, label, children }: { href: string; label: string; children: React.ReactNode }) => (
   <a
@@ -22,16 +23,12 @@ export const Footer = () => {
       <div className="container-tight py-16">
         <div className="grid gap-12 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary">
-                <TrendingUp className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
-              </div>
-              <span className="font-display text-lg font-bold">
-                Smart<span className="text-primary">Algos</span>
-              </span>
+            <Link to="/" className="inline-flex items-center" aria-label={`${BRAND.full} home`}>
+              <Brand size={40} />
             </Link>
+            <p className="mt-2 text-xs uppercase tracking-[0.25em] text-primary/80">{BRAND.suffix}</p>
             <p className="mt-4 max-w-md text-sm text-muted-foreground leading-relaxed">
-              Premium Expert Advisors, indicators and bots, plus 1-on-1 mentorship for serious traders. Built by traders, for traders.
+              {BRAND.tagline} Premium Expert Advisors, indicators and bots, plus 1-on-1 mentorship for serious traders.
             </p>
 
             <div className="mt-6">
@@ -80,7 +77,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} SmartAlgos. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {BRAND.full}. All rights reserved.</p>
           <p>Trading involves substantial risk. Past performance is not indicative of future results.</p>
         </div>
       </div>

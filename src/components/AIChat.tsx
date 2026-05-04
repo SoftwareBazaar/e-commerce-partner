@@ -57,7 +57,7 @@ export const AIChat = () => {
             <Sparkles className="h-4 w-4 text-primary-foreground" />
           </div>
           <div>
-            <p className="font-semibold text-sm">SmartAlgos AI</p>
+            <p className="font-semibold text-sm">NeuroAlgo AI</p>
             <p className="text-xs text-muted-foreground">Trading tools assistant</p>
           </div>
         </div>
