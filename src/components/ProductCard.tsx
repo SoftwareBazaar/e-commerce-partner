@@ -26,12 +26,18 @@ export const ProductCard = ({ product, index = 0 }: { product: Product; index?: 
     >
       {/* Visual */}
       <div className="relative mb-4 aspect-video overflow-hidden rounded-xl bg-muted/40 bg-grid">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="font-display text-5xl font-bold text-foreground/20">
-            {product.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
-          </div>
-        </div>
+        {product.imageUrl ? (
+          <img src={product.imageUrl} alt={product.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="font-display text-5xl font-bold text-foreground/20">
+                {product.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+              </div>
+            </div>
+          </>
+        )}
         {product.youtubeId && (
           <a
             href={`https://youtube.com/watch?v=${product.youtubeId}`}
