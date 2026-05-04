@@ -7,7 +7,7 @@ const values = [
   { icon: Target, title: "Disciplined", desc: "Risk-first design. Every tool ships with rules to protect your capital." },
   { icon: Lightbulb, title: "Transparent", desc: "Clear logic, honest results, no recycled YouTube hype." },
   { icon: Award, title: "Battle-tested", desc: "Tools used on live and prop-firm accounts before they reach you." },
-  { icon: Globe, title: "Global", desc: "Traders from 40+ countries trust SmartAlgos to power their setups." },
+  { icon: Globe, title: "Global", desc: "Traders from 40+ countries trust NeuroAlgo to power their setups." },
 ];
 
 const About = () => (
@@ -17,7 +17,7 @@ const About = () => (
         <Badge variant="outline" className="border-primary/40 text-primary mb-3">About</Badge>
         <h1 className="font-display text-4xl md:text-5xl font-bold">Built by a trader, for traders.</h1>
         <p className="mt-4 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          SmartAlgos is the home of premium Expert Advisors, indicators and mentorship — created by Robert and a small team of working traders who code their own tools.
+          NeuroAlgo is the home of premium Expert Advisors, indicators and mentorship — created by Robert and a small team of working traders who code their own tools.
         </p>
       </div>
     </section>
@@ -31,7 +31,7 @@ const About = () => (
               Eight years ago Robert blew his first three live accounts. The fourth one survived — not because he found a magic indicator, but because he learned to code his own rules and let the algorithm enforce his discipline.
             </p>
             <p>
-              Today SmartAlgos sells the same EAs and indicators Robert and his team trade on real money, and offers 1-on-1 mentorship to traders ready to take it seriously.
+              Today NeuroAlgo sells the same EAs and indicators Robert and his team trade on real money, and offers 1-on-1 mentorship to traders ready to take it seriously.
             </p>
             <p>
               No signal groups. No copy-trade lottery. Just well-designed, well-documented tools and honest education.
