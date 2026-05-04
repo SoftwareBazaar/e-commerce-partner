@@ -43,7 +43,21 @@ const Dashboard = () => {
             <p className="text-muted-foreground text-sm">{user?.email}</p>
           </div>
           <div className="flex gap-2">
-            {isAdmin && <Button asChild variant="outline"><Link to="/admin">Admin Panel</Link></Button>}
+            {isAdmin ? (
+              <Button asChild className="bg-gradient-primary text-primary-foreground"><Link to="/admin">Admin Panel</Link></Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={async () => {
+                  const { data, error } = await supabase.rpc("claim_admin");
+                  if (error) toast({ title: "Cannot claim admin", description: error.message, variant: "destructive" });
+                  else if (data) { toast({ title: "You are now an admin", description: "Reload to see the Admin Panel." }); setTimeout(() => window.location.reload(), 800); }
+                  else toast({ title: "Admin already exists", description: "Ask the existing admin to grant you access.", variant: "destructive" });
+                }}
+              >
+                Claim admin (first-time setup)
+              </Button>
+            )}
             <Button variant="outline" onClick={signOut}>Sign out</Button>
           </div>
         </div>
