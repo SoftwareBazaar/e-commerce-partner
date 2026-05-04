@@ -17,6 +17,7 @@ export interface Product {
   youtubeId?: string;
   featured?: boolean;
   tags: string[];
+  imageUrl?: string;
 }
 
 export const products: Product[] = [

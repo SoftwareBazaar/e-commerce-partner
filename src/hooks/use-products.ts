@@ -19,6 +19,7 @@ const mapRow = (r: any): Product => ({
   youtubeId: r.youtube_id ?? undefined,
   featured: !!r.featured,
   tags: r.tags ?? [],
+  imageUrl: r.image_url ?? undefined,
 });
 
 export const useProducts = () => {
