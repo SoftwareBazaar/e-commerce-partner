@@ -233,11 +233,14 @@ const Admin = () => {
         </Dialog>
 
         <Tabs defaultValue="products">
-          <TabsList>
+          <TabsList className="flex-wrap h-auto">
             <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
+            <TabsTrigger value="orders">Orders ({orders.length})</TabsTrigger>
             <TabsTrigger value="requests">EA Requests ({requests.length})</TabsTrigger>
             <TabsTrigger value="bookings">Bookings ({bookings.length})</TabsTrigger>
             <TabsTrigger value="messages">Messages ({messages.length})</TabsTrigger>
+            <TabsTrigger value="blog">Blog ({posts.length})</TabsTrigger>
+            <TabsTrigger value="subs">Subscribers ({subs.length})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6 space-y-3">
