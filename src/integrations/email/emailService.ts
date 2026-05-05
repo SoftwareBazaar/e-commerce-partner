@@ -35,7 +35,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
       '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
       '<p><strong>Order ID:</strong> ' + '{{orderId}}' + '</p>' +
       '<p><strong>Product:</strong> ' + '{{productName}}' + '</p>' +
-      '<p><strong>Amount:</strong> $' + '{{amount}}' + '</p>' +
+      '<p><strong>Amount:</strong> ' + '{{amount}}' + '</p>' +
       '<p><strong>Date:</strong> ' + '{{orderDate}}' + '</p>' +
       '</div>' +
       '<p>You will receive a download link shortly.</p>' +
@@ -50,14 +50,14 @@ export const emailTemplates: Record<string, EmailTemplate> = {
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Custom EA Request Received</h2>' +
       '<p>Hi ' + '{{clientName}}' + ',</p>' +
-      '<p>Thank you for submitting your custom EA request. We\'ve received your details and will review them shortly.</p>' +
+      '<p>Thank you for submitting your custom EA request. We have received your details and will review them shortly.</p>' +
       '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
       '<p><strong>Request ID:</strong> ' + '{{requestId}}' + '</p>' +
       '<p><strong>Strategy:</strong> ' + '{{strategy}}' + '</p>' +
       '<p><strong>Budget Range:</strong> ' + '{{budgetRange}}' + '</p>' +
       '<p><strong>Deadline:</strong> ' + '{{deadline}}' + '</p>' +
       '</div>' +
-      '<p>We\'ll contact you within 24 hours with a quote and timeline.</p>' +
+      '<p>We will contact you within 24 hours with a quote and timeline.</p>' +
       '<p>Best regards,<br>Robert Trading Tools Team</p>' +
       '</div>',
     variables: ["clientName", "requestId", "strategy", "budgetRange", "deadline"],
@@ -88,7 +88,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Message Received</h2>' +
       '<p>Hi ' + '{{senderName}}' + ',</p>' +
-      '<p>Thank you for reaching out. We\'ve received your message and will get back to you as soon as possible.</p>' +
+      '<p>Thank you for reaching out. We have received your message and will get back to you as soon as possible.</p>' +
       '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
       '<p><strong>Subject:</strong> ' + '{{subject}}' + '</p>' +
       '<p><strong>Message ID:</strong> ' + '{{messageId}}' + '</p>' +
