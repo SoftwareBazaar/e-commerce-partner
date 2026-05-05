@@ -56,7 +56,7 @@ const Auth = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary glow-primary">
             <TrendingUp className="h-5 w-5 text-primary-foreground" strokeWidth={2.5} />
           </div>
-          <span className="font-display text-xl font-bold">Smart<span className="text-primary">Algos</span></span>
+          <span className="font-display text-xl font-bold">Neuro<span className="text-primary">Algo</span></span>
         </Link>
         <div className="rounded-2xl border border-border bg-gradient-card p-6 md:p-8">
           <Tabs defaultValue="login">
