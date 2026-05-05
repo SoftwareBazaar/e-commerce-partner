@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductReviews } from "@/components/ProductReviews";
 import { useProducts } from "@/hooks/use-products";
 import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
@@ -179,6 +180,7 @@ const ProductDetail = () => {
           </div>
         </section>
       )}
+      {product.id && <ProductReviews productId={product.id} />}
     </>
   );
 };

@@ -18,6 +18,10 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import Checkout from "./pages/Checkout";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Affiliate from "./pages/Affiliate";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -38,6 +42,10 @@ const App = () => (
                 <Route path="/custom-ea" element={<CustomEA />} />
                 <Route path="/mentorship" element={<Mentorship />} />
                 <Route path="/booking" element={<Booking />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/affiliate" element={<RequireAuth><Affiliate /></RequireAuth>} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/auth" element={<Auth />} />

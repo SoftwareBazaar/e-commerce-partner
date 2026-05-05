@@ -65,7 +65,7 @@ export const CartDrawer = () => {
               <span className="text-xl font-bold">${total.toFixed(0)}</span>
             </div>
             <Button asChild className="w-full bg-gradient-primary text-primary-foreground" size="lg">
-              <Link to="/contact" onClick={() => setOpen(false)}>Contact to Purchase</Link>
+              <Link to="/checkout" onClick={() => setOpen(false)}>Checkout</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={clear} className="w-full text-muted-foreground">
               Clear cart

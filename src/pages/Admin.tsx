@@ -130,19 +130,29 @@ const Admin = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [subs, setSubs] = useState<any[]>([]);
   const [editing, setEditing] = useState<Product | null>(null);
+  const [editingPost, setEditingPost] = useState<any | null>(null);
 
   const refresh = async () => {
-    const [p, r, b, m] = await Promise.all([
+    const [p, r, b, m, o, bp, ns] = await Promise.all([
       supabase.from("products").select("*").order("created_at", { ascending: false }),
       supabase.from("ea_requests").select("*").order("created_at", { ascending: false }),
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
+      supabase.from("orders").select("*").order("created_at", { ascending: false }),
+      supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
+      supabase.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }),
     ]);
     setProducts(p.data ?? []);
     setRequests(r.data ?? []);
     setBookings(b.data ?? []);
     setMessages(m.data ?? []);
+    setOrders(o.data ?? []);
+    setPosts(bp.data ?? []);
+    setSubs(ns.data ?? []);
   };
 
   useEffect(() => { refresh(); }, []);
@@ -154,7 +164,31 @@ const Admin = () => {
     else refresh();
   };
 
-  const setStatus = async (table: "ea_requests" | "bookings", id: string, status: string) => {
+  const deletePost = async (id: string) => {
+    if (!confirm("Delete this post?")) return;
+    await supabase.from("blog_posts").delete().eq("id", id);
+    refresh();
+  };
+
+  const savePost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      slug: String(fd.get("slug")),
+      title: String(fd.get("title")),
+      excerpt: String(fd.get("excerpt") || ""),
+      body: String(fd.get("body")),
+      cover_url: String(fd.get("cover_url") || "") || null,
+      published: fd.get("published") === "on",
+    };
+    const { error } = editingPost?.id
+      ? await supabase.from("blog_posts").update(payload).eq("id", editingPost.id)
+      : await supabase.from("blog_posts").insert(payload);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: "Saved" }); setEditingPost(null); refresh(); }
+  };
+
+  const setStatus = async (table: "ea_requests" | "bookings" | "orders", id: string, status: string) => {
     await supabase.from(table).update({ status }).eq("id", id);
     refresh();
   };
@@ -179,12 +213,34 @@ const Admin = () => {
           </DialogContent>
         </Dialog>
 
+        <Dialog open={!!editingPost} onOpenChange={(o) => !o && setEditingPost(null)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader><DialogTitle>{editingPost?.id ? "Edit Post" : "New Post"}</DialogTitle></DialogHeader>
+            {editingPost && (
+              <form onSubmit={savePost} className="space-y-3">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div><Label>Slug</Label><Input name="slug" required defaultValue={editingPost.slug} className="mt-1 bg-input" /></div>
+                  <div><Label>Title</Label><Input name="title" required defaultValue={editingPost.title} className="mt-1 bg-input" /></div>
+                </div>
+                <div><Label>Cover image URL</Label><Input name="cover_url" defaultValue={editingPost.cover_url ?? ""} className="mt-1 bg-input" /></div>
+                <div><Label>Excerpt</Label><Input name="excerpt" defaultValue={editingPost.excerpt ?? ""} className="mt-1 bg-input" /></div>
+                <div><Label>Body (markdown / plain text)</Label><Textarea name="body" required rows={10} defaultValue={editingPost.body ?? ""} className="mt-1 bg-input font-mono text-xs" /></div>
+                <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked={editingPost.published} /> Published</label>
+                <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">Save post</Button>
+              </form>
+            )}
+          </DialogContent>
+        </Dialog>
+
         <Tabs defaultValue="products">
-          <TabsList>
+          <TabsList className="flex-wrap h-auto">
             <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
+            <TabsTrigger value="orders">Orders ({orders.length})</TabsTrigger>
             <TabsTrigger value="requests">EA Requests ({requests.length})</TabsTrigger>
             <TabsTrigger value="bookings">Bookings ({bookings.length})</TabsTrigger>
             <TabsTrigger value="messages">Messages ({messages.length})</TabsTrigger>
+            <TabsTrigger value="blog">Blog ({posts.length})</TabsTrigger>
+            <TabsTrigger value="subs">Subscribers ({subs.length})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6 space-y-3">
@@ -251,6 +307,54 @@ const Admin = () => {
                 {m.subject && <p className="text-sm">{m.subject}</p>}
                 <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">{m.message}</p>
                 <p className="text-xs text-muted-foreground mt-2">{new Date(m.created_at).toLocaleString()}</p>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="orders" className="mt-6 space-y-3">
+            {orders.length === 0 && <p className="text-muted-foreground text-sm">No orders yet.</p>}
+            {orders.map((o) => (
+              <div key={o.id} className="rounded-xl border border-border bg-gradient-card p-4">
+                <div className="flex justify-between gap-4 flex-wrap">
+                  <div>
+                    <p className="font-semibold">{o.product_name} <Badge variant="outline" className="ml-1">{o.plan}</Badge></p>
+                    <p className="text-sm text-muted-foreground">{o.full_name} • {o.email} • {o.phone}</p>
+                    <p className="text-xs text-muted-foreground mt-1">${Number(o.amount).toFixed(0)} {o.referral_code && `• ref: ${o.referral_code}`} • {new Date(o.created_at).toLocaleString()}</p>
+                    {o.notes && <p className="text-xs mt-1 whitespace-pre-wrap">{o.notes}</p>}
+                  </div>
+                  <select value={o.status} onChange={(e) => setStatus("orders", o.id, e.target.value)} className="h-9 rounded-md border border-border bg-input px-2 text-sm">
+                    <option value="pending">pending</option><option value="paid">paid</option><option value="delivered">delivered</option><option value="cancelled">cancelled</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="blog" className="mt-6 space-y-3">
+            <Button onClick={() => setEditingPost({ slug: "", title: "", body: "", excerpt: "", cover_url: "", published: false })} className="bg-gradient-primary text-primary-foreground">
+              <Plus className="h-4 w-4 mr-1.5" /> New Post
+            </Button>
+            {posts.length === 0 && <p className="text-muted-foreground text-sm">No posts yet.</p>}
+            {posts.map((p) => (
+              <div key={p.id} className="flex justify-between items-center gap-3 rounded-xl border border-border bg-gradient-card p-4">
+                <div className="min-w-0">
+                  <p className="font-semibold truncate">{p.title} {p.published ? <Badge className="ml-1 bg-primary/20 text-primary border-primary/40">Published</Badge> : <Badge variant="outline" className="ml-1">Draft</Badge>}</p>
+                  <p className="text-xs text-muted-foreground">/{p.slug} • {new Date(p.created_at).toLocaleDateString()}</p>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" onClick={() => setEditingPost(p)}><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => deletePost(p.id)}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="subs" className="mt-6 space-y-2">
+            {subs.length === 0 && <p className="text-muted-foreground text-sm">No subscribers yet.</p>}
+            {subs.map((s) => (
+              <div key={s.id} className="flex justify-between rounded-lg border border-border bg-card/40 p-3 text-sm">
+                <span>{s.email}</span>
+                <span className="text-muted-foreground text-xs">{new Date(s.created_at).toLocaleDateString()} • {s.source}</span>
               </div>
             ))}
           </TabsContent>

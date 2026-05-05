@@ -13,6 +13,7 @@ const nav = [
   { to: "/marketplace", label: "Marketplace" },
   { to: "/custom-ea", label: "Custom EA" },
   { to: "/mentorship", label: "Mentorship" },
+  { to: "/blog", label: "Blog" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
