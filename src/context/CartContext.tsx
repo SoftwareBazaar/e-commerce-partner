@@ -66,8 +66,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     clear,
     open,
     setOpen,
-    count: items.reduce((s, i) => s + i.qty, 0),
-    total: items.reduce((s, i) => s + i.qty * i.price, 0),
+    count: items.reduce((s, i) => s + (i.qty || 0), 0),
+    total: items.reduce((s, i) => s + (i.qty || 0) * (i.price || 0), 0),
   }), [items, add, remove, clear, open]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

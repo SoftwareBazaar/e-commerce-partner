@@ -42,7 +42,7 @@ export const CartDrawer = () => {
                   <p className="text-xs text-muted-foreground mt-1">Qty: {i.qty}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold">${(i.price * i.qty).toFixed(0)}</p>
+                  <p className="text-sm font-semibold">${((i.price || 0) * (i.qty || 0)).toFixed(0)}</p>
                   <Button
                     variant="ghost"
                     size="icon"

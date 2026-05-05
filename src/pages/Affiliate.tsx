@@ -43,7 +43,7 @@ const Affiliate = () => {
   );
 
   const link = aff ? `${window.location.origin}/?ref=${aff.code}` : "";
-  const earned = orders.reduce((s, o) => s + (Number(o.amount) || 0), 0) * (aff?.commission_pct ?? 15) / 100;
+  const earned = orders.reduce((s, o) => s + (Number(o.amount || 0)), 0) * (aff?.commission_pct ?? 15) / 100;
 
   return (
     <section className="py-12">

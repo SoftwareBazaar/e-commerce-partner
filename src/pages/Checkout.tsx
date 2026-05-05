@@ -31,8 +31,8 @@ const Checkout = () => {
       email: String(fd.get("email")),
       phone: String(fd.get("phone") || ""),
       product_name: i.name,
-      plan: i.mode,
-      amount: i.price * i.qty,
+      mode: i.mode,
+      amount: (i.price || 0) * (i.qty || 1),
       notes: String(fd.get("notes") || ""),
       referral_code: ref || null,
     }));
@@ -108,7 +108,7 @@ const Checkout = () => {
                 <p className="font-medium">{i.name}</p>
                 <p className="text-xs text-muted-foreground">{i.mode === "buy" ? "Lifetime" : "Monthly"} × {i.qty}</p>
               </div>
-              <p className="font-semibold">${(i.price * i.qty).toFixed(0)}</p>
+              <p className="font-semibold">${((i.price || 0) * (i.qty || 1)).toFixed(0)}</p>
             </div>
           ))}
           <div className="flex justify-between pt-2 font-bold">
