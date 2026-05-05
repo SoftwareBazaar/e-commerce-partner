@@ -4,6 +4,7 @@ import type { Product } from "@/data/products";
 import { products as seed } from "@/data/products";
 
 const mapRow = (r: any): Product => ({
+  id: r.id,
   slug: r.slug,
   name: r.name,
   category: r.category,

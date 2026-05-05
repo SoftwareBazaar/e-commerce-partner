@@ -180,6 +180,7 @@ const ProductDetail = () => {
           </div>
         </section>
       )}
+      {product.id && <ProductReviews productId={product.id} />}
     </>
   );
 };

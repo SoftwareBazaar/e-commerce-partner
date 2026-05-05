@@ -2,6 +2,7 @@ export type ProductCategory = "EA" | "Indicator" | "Bot" | "Bundle";
 export type Compatibility = "MT4" | "MT5" | "Both";
 
 export interface Product {
+  id?: string;
   slug: string;
   name: string;
   category: ProductCategory;
