@@ -21,108 +21,99 @@ export interface EmailNotification {
 
 /**
  * Email templates for different notification types
+ * Using string concatenation to avoid template literal issues
  */
 export const emailTemplates: Record<string, EmailTemplate> = {
   orderConfirmation: {
     id: "order-confirmation",
     name: "Order Confirmation",
     subject: "Your Order Confirmation - Robert Trading Tools",
-    htmlContent: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Order Confirmation</h2>
-        <p>Hi {{customerName}},</p>
-        <p>Thank you for your purchase! Your order has been confirmed.</p>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Order ID:</strong> {{orderId}}</p>
-          <p><strong>Product:</strong> {{productName}}</p>
-          <p><strong>Amount:</strong> ${{amount}}</p>
-          <p><strong>Date:</strong> {{orderDate}}</p>
-        </div>
-        <p>You will receive a download link shortly.</p>
-        <p>Best regards,<br>Robert Trading Tools Team</p>
-      </div>
-    `,
+    htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+      '<h2>Order Confirmation</h2>' +
+      '<p>Hi ' + '{{customerName}}' + ',</p>' +
+      '<p>Thank you for your purchase! Your order has been confirmed.</p>' +
+      '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
+      '<p><strong>Order ID:</strong> ' + '{{orderId}}' + '</p>' +
+      '<p><strong>Product:</strong> ' + '{{productName}}' + '</p>' +
+      '<p><strong>Amount:</strong> $' + '{{amount}}' + '</p>' +
+      '<p><strong>Date:</strong> ' + '{{orderDate}}' + '</p>' +
+      '</div>' +
+      '<p>You will receive a download link shortly.</p>' +
+      '<p>Best regards,<br>Robert Trading Tools Team</p>' +
+      '</div>',
     variables: ["customerName", "orderId", "productName", "amount", "orderDate"],
   },
   customEARequest: {
     id: "custom-ea-request",
     name: "Custom EA Request Received",
     subject: "Your Custom EA Request - Robert Trading Tools",
-    htmlContent: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Custom EA Request Received</h2>
-        <p>Hi {{clientName}},</p>
-        <p>Thank you for submitting your custom EA request. We've received your details and will review them shortly.</p>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Request ID:</strong> {{requestId}}</p>
-          <p><strong>Strategy:</strong> {{strategy}}</p>
-          <p><strong>Budget Range:</strong> {{budgetRange}}</p>
-          <p><strong>Deadline:</strong> {{deadline}}</p>
-        </div>
-        <p>We'll contact you within 24 hours with a quote and timeline.</p>
-        <p>Best regards,<br>Robert Trading Tools Team</p>
-      </div>
-    `,
+    htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+      '<h2>Custom EA Request Received</h2>' +
+      '<p>Hi ' + '{{clientName}}' + ',</p>' +
+      '<p>Thank you for submitting your custom EA request. We\'ve received your details and will review them shortly.</p>' +
+      '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
+      '<p><strong>Request ID:</strong> ' + '{{requestId}}' + '</p>' +
+      '<p><strong>Strategy:</strong> ' + '{{strategy}}' + '</p>' +
+      '<p><strong>Budget Range:</strong> ' + '{{budgetRange}}' + '</p>' +
+      '<p><strong>Deadline:</strong> ' + '{{deadline}}' + '</p>' +
+      '</div>' +
+      '<p>We\'ll contact you within 24 hours with a quote and timeline.</p>' +
+      '<p>Best regards,<br>Robert Trading Tools Team</p>' +
+      '</div>',
     variables: ["clientName", "requestId", "strategy", "budgetRange", "deadline"],
   },
   bookingConfirmation: {
     id: "booking-confirmation",
     name: "Booking Confirmation",
     subject: "Your Booking Confirmation - Robert Trading Tools",
-    htmlContent: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Booking Confirmation</h2>
-        <p>Hi {{clientName}},</p>
-        <p>Your consultation booking has been confirmed!</p>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Package:</strong> {{packageName}}</p>
-          <p><strong>Date & Time:</strong> {{dateTime}}</p>
-          <p><strong>Duration:</strong> {{duration}}</p>
-          <p><strong>Booking ID:</strong> {{bookingId}}</p>
-        </div>
-        <p>A Zoom link will be sent 24 hours before your session.</p>
-        <p>Best regards,<br>Robert Trading Tools Team</p>
-      </div>
-    `,
+    htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+      '<h2>Booking Confirmation</h2>' +
+      '<p>Hi ' + '{{clientName}}' + ',</p>' +
+      '<p>Your consultation booking has been confirmed!</p>' +
+      '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
+      '<p><strong>Package:</strong> ' + '{{packageName}}' + '</p>' +
+      '<p><strong>Date & Time:</strong> ' + '{{dateTime}}' + '</p>' +
+      '<p><strong>Duration:</strong> ' + '{{duration}}' + '</p>' +
+      '<p><strong>Booking ID:</strong> ' + '{{bookingId}}' + '</p>' +
+      '</div>' +
+      '<p>A Zoom link will be sent 24 hours before your session.</p>' +
+      '<p>Best regards,<br>Robert Trading Tools Team</p>' +
+      '</div>',
     variables: ["clientName", "packageName", "dateTime", "duration", "bookingId"],
   },
   contactFormSubmission: {
     id: "contact-form",
     name: "Contact Form Submission",
     subject: "We Received Your Message - Robert Trading Tools",
-    htmlContent: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Message Received</h2>
-        <p>Hi {{senderName}},</p>
-        <p>Thank you for reaching out. We've received your message and will get back to you as soon as possible.</p>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Subject:</strong> {{subject}}</p>
-          <p><strong>Message ID:</strong> {{messageId}}</p>
-        </div>
-        <p>Expected response time: 24-48 hours</p>
-        <p>Best regards,<br>Robert Trading Tools Team</p>
-      </div>
-    `,
+    htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+      '<h2>Message Received</h2>' +
+      '<p>Hi ' + '{{senderName}}' + ',</p>' +
+      '<p>Thank you for reaching out. We\'ve received your message and will get back to you as soon as possible.</p>' +
+      '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
+      '<p><strong>Subject:</strong> ' + '{{subject}}' + '</p>' +
+      '<p><strong>Message ID:</strong> ' + '{{messageId}}' + '</p>' +
+      '</div>' +
+      '<p>Expected response time: 24-48 hours</p>' +
+      '<p>Best regards,<br>Robert Trading Tools Team</p>' +
+      '</div>',
     variables: ["senderName", "subject", "messageId"],
   },
   downloadLink: {
     id: "download-link",
     name: "Download Link",
     subject: "Your Download Link - Robert Trading Tools",
-    htmlContent: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Your Download is Ready</h2>
-        <p>Hi {{customerName}},</p>
-        <p>Your {{productName}} is ready to download!</p>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Product:</strong> {{productName}}</p>
-          <p><strong>Order ID:</strong> {{orderId}}</p>
-          <a href="{{downloadUrl}}" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 10px 0;">Download Now</a>
-        </div>
-        <p>This link will expire in 7 days.</p>
-        <p>Best regards,<br>Robert Trading Tools Team</p>
-      </div>
-    `,
+    htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+      '<h2>Your Download is Ready</h2>' +
+      '<p>Hi ' + '{{customerName}}' + ',</p>' +
+      '<p>Your ' + '{{productName}}' + ' is ready to download!</p>' +
+      '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
+      '<p><strong>Product:</strong> ' + '{{productName}}' + '</p>' +
+      '<p><strong>Order ID:</strong> ' + '{{orderId}}' + '</p>' +
+      '<a href="' + '{{downloadUrl}}' + '" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 10px 0;">Download Now</a>' +
+      '</div>' +
+      '<p>This link will expire in 7 days.</p>' +
+      '<p>Best regards,<br>Robert Trading Tools Team</p>' +
+      '</div>',
     variables: ["customerName", "productName", "orderId", "downloadUrl"],
   },
 };
@@ -134,9 +125,15 @@ export async function sendEmailNotification(
   notification: EmailNotification
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
+    console.log("[emailService] Sending email notification:", {
+      recipient: notification.recipientEmail,
+      templateId: notification.templateId,
+      variables: Object.keys(notification.templateVariables)
+    });
+
     const template = emailTemplates[notification.templateId];
     if (!template) {
-      throw new Error(`Template not found: ${notification.templateId}`);
+      throw new Error("Template not found: " + notification.templateId);
     }
 
     // Replace variables in template
@@ -144,10 +141,13 @@ export async function sendEmailNotification(
     let subject = template.subject;
 
     Object.entries(notification.templateVariables).forEach(([key, value]) => {
-      const regex = new RegExp(`{{${key}}}`, "g");
-      htmlContent = htmlContent.replace(regex, value);
-      subject = subject.replace(regex, value);
+      const placeholder = "{{" + key + "}}";
+      const regex = new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
+      htmlContent = htmlContent.replace(regex, value || "");
+      subject = subject.replace(regex, value || "");
     });
+
+    console.log("[emailService] Template processed, calling edge function");
 
     // Call SendGrid API via Supabase Edge Function
     const response = await supabase.functions.invoke("send-email", {
@@ -163,6 +163,8 @@ export async function sendEmailNotification(
       throw response.error;
     }
 
+    console.log("[emailService] Email sent successfully");
+
     // Log notification to database
     const { data, error } = await supabase
       .from("email_notifications")
@@ -176,7 +178,7 @@ export async function sendEmailNotification(
       });
 
     if (error) {
-      console.error("Error logging notification:", error);
+      console.error("[emailService] Error logging notification:", error);
     }
 
     return {
@@ -184,7 +186,7 @@ export async function sendEmailNotification(
       messageId: response.data?.messageId,
     };
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("[emailService] Error sending email:", error);
 
     // Log failed notification
     await supabase
@@ -196,7 +198,7 @@ export async function sendEmailNotification(
         status: "failed",
         error: error instanceof Error ? error.message : "Unknown error",
       })
-      .catch((err) => console.error("Error logging failed notification:", err));
+      .catch((err) => console.error("[emailService] Error logging failed notification:", err));
 
     return {
       success: false,
@@ -218,7 +220,7 @@ export async function sendOrderConfirmation(
 ) {
   return sendEmailNotification({
     recipientEmail: customerEmail,
-    templateId: "order-confirmation",
+    templateId: "orderConfirmation",
     templateVariables: {
       customerName,
       orderId,
@@ -242,7 +244,7 @@ export async function sendCustomEARequestConfirmation(
 ) {
   return sendEmailNotification({
     recipientEmail: clientEmail,
-    templateId: "custom-ea-request",
+    templateId: "customEARequest",
     templateVariables: {
       clientName,
       requestId,
@@ -266,7 +268,7 @@ export async function sendBookingConfirmation(
 ) {
   return sendEmailNotification({
     recipientEmail: clientEmail,
-    templateId: "booking-confirmation",
+    templateId: "bookingConfirmation",
     templateVariables: {
       clientName,
       packageName,
@@ -288,7 +290,7 @@ export async function sendContactFormConfirmation(
 ) {
   return sendEmailNotification({
     recipientEmail: senderEmail,
-    templateId: "contact-form",
+    templateId: "contactFormSubmission",
     templateVariables: {
       senderName,
       subject,
@@ -309,7 +311,7 @@ export async function sendDownloadLink(
 ) {
   return sendEmailNotification({
     recipientEmail: customerEmail,
-    templateId: "download-link",
+    templateId: "downloadLink",
     templateVariables: {
       customerName,
       productName,
@@ -339,7 +341,7 @@ export async function getEmailNotificationHistory(
   const { data, error } = await query;
 
   if (error) {
-    console.error("Error fetching notification history:", error);
+    console.error("[emailService] Error fetching notification history:", error);
     return [];
   }
 
