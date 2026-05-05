@@ -137,22 +137,26 @@ const Admin = () => {
   const [editingPost, setEditingPost] = useState<any | null>(null);
 
   const refresh = async () => {
-    const [p, r, b, m, o, bp, ns] = await Promise.all([
-      supabase.from("products").select("*").order("created_at", { ascending: false }),
-      supabase.from("ea_requests").select("*").order("created_at", { ascending: false }),
-      supabase.from("bookings").select("*").order("created_at", { ascending: false }),
-      supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
-      supabase.from("orders").select("*").order("created_at", { ascending: false }),
-      supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
-      supabase.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }),
-    ]);
-    setProducts(p.data ?? []);
-    setRequests(r.data ?? []);
-    setBookings(b.data ?? []);
-    setMessages(m.data ?? []);
-    setOrders(o.data ?? []);
-    setPosts(bp.data ?? []);
-    setSubs(ns.data ?? []);
+    try {
+      const [p, r, b, m, o, bp, ns] = await Promise.all([
+        supabase.from("products").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("ea_requests").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("bookings").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("contact_messages").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("orders").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("blog_posts").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+      ]);
+      setProducts(p.data ?? []);
+      setRequests(r.data ?? []);
+      setBookings(b.data ?? []);
+      setMessages(m.data ?? []);
+      setOrders(o.data ?? []);
+      setPosts(bp.data ?? []);
+      setSubs(ns.data ?? []);
+    } catch (err) {
+      console.error("Error refreshing admin data:", err);
+    }
   };
 
   useEffect(() => { refresh(); }, []);

@@ -19,10 +19,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("ea_requests").select("*").order("created_at", { ascending: false }).then(({ data }) => setRequests(data ?? []));
-    supabase.from("bookings").select("*").order("created_at", { ascending: false }).then(({ data }) => setBookings(data ?? []));
-    supabase.from("orders").select("*").order("created_at", { ascending: false }).then(({ data }) => setOrders(data ?? []));
-    supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => setProfile(data));
+    try {
+      supabase.from("ea_requests").select("*").order("created_at", { ascending: false }).then(({ data }) => setRequests(data ?? [])).catch(() => setRequests([]));
+      supabase.from("bookings").select("*").order("created_at", { ascending: false }).then(({ data }) => setBookings(data ?? [])).catch(() => setBookings([]));
+      supabase.from("orders").select("*").order("created_at", { ascending: false }).then(({ data }) => setOrders(data ?? [])).catch(() => setOrders([]));
+      supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => setProfile(data)).catch(() => setProfile(null));
+    } catch (err) {
+      console.error("Error loading dashboard data:", err);
+    }
   }, [user]);
 
   const saveProfile = async (e: React.FormEvent<HTMLFormElement>) => {

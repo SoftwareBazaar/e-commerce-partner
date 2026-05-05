@@ -17,13 +17,21 @@ const Affiliate = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("affiliates").select("*").eq("user_id", user.id).maybeSingle().then(({ data }) => setAff(data));
+    try {
+      supabase.from("affiliates").select("*").eq("user_id", user.id).maybeSingle().then(({ data }) => setAff(data)).catch(() => setAff(null));
+    } catch (err) {
+      console.error("Error loading affiliate data:", err);
+    }
   }, [user]);
 
   useEffect(() => {
     if (!aff) return;
-    supabase.from("orders").select("*").eq("referral_code", aff.code).order("created_at", { ascending: false })
-      .then(({ data }) => setOrders(data ?? []));
+    try {
+      supabase.from("orders").select("*").eq("referral_code", aff.code).order("created_at", { ascending: false })
+        .then(({ data }) => setOrders(data ?? [])).catch(() => setOrders([]));
+    } catch (err) {
+      console.error("Error loading orders:", err);
+    }
   }, [aff]);
 
   const enroll = async () => {
