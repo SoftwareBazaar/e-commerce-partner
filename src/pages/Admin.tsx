@@ -310,6 +310,54 @@ const Admin = () => {
               </div>
             ))}
           </TabsContent>
+
+          <TabsContent value="orders" className="mt-6 space-y-3">
+            {orders.length === 0 && <p className="text-muted-foreground text-sm">No orders yet.</p>}
+            {orders.map((o) => (
+              <div key={o.id} className="rounded-xl border border-border bg-gradient-card p-4">
+                <div className="flex justify-between gap-4 flex-wrap">
+                  <div>
+                    <p className="font-semibold">{o.product_name} <Badge variant="outline" className="ml-1">{o.plan}</Badge></p>
+                    <p className="text-sm text-muted-foreground">{o.full_name} • {o.email} • {o.phone}</p>
+                    <p className="text-xs text-muted-foreground mt-1">${Number(o.amount).toFixed(0)} {o.referral_code && `• ref: ${o.referral_code}`} • {new Date(o.created_at).toLocaleString()}</p>
+                    {o.notes && <p className="text-xs mt-1 whitespace-pre-wrap">{o.notes}</p>}
+                  </div>
+                  <select value={o.status} onChange={(e) => setStatus("orders", o.id, e.target.value)} className="h-9 rounded-md border border-border bg-input px-2 text-sm">
+                    <option value="pending">pending</option><option value="paid">paid</option><option value="delivered">delivered</option><option value="cancelled">cancelled</option>
+                  </select>
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="blog" className="mt-6 space-y-3">
+            <Button onClick={() => setEditingPost({ slug: "", title: "", body: "", excerpt: "", cover_url: "", published: false })} className="bg-gradient-primary text-primary-foreground">
+              <Plus className="h-4 w-4 mr-1.5" /> New Post
+            </Button>
+            {posts.length === 0 && <p className="text-muted-foreground text-sm">No posts yet.</p>}
+            {posts.map((p) => (
+              <div key={p.id} className="flex justify-between items-center gap-3 rounded-xl border border-border bg-gradient-card p-4">
+                <div className="min-w-0">
+                  <p className="font-semibold truncate">{p.title} {p.published ? <Badge className="ml-1 bg-primary/20 text-primary border-primary/40">Published</Badge> : <Badge variant="outline" className="ml-1">Draft</Badge>}</p>
+                  <p className="text-xs text-muted-foreground">/{p.slug} • {new Date(p.created_at).toLocaleDateString()}</p>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Button variant="ghost" size="icon" onClick={() => setEditingPost(p)}><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => deletePost(p.id)}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="subs" className="mt-6 space-y-2">
+            {subs.length === 0 && <p className="text-muted-foreground text-sm">No subscribers yet.</p>}
+            {subs.map((s) => (
+              <div key={s.id} className="flex justify-between rounded-lg border border-border bg-card/40 p-3 text-sm">
+                <span>{s.email}</span>
+                <span className="text-muted-foreground text-xs">{new Date(s.created_at).toLocaleDateString()} • {s.source}</span>
+              </div>
+            ))}
+          </TabsContent>
         </Tabs>
       </div>
     </section>
