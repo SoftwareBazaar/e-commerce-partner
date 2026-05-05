@@ -117,7 +117,7 @@ export const packages: MentorshipPackage[] = [
 ];
 
 export const SOCIALS = {
-  whatsapp: "https://wa.me/254700000000",
+  whatsapp: "https://wa.me/254791282295",
   telegram: "https://t.me/neuroalgo",
   instagram: "https://instagram.com/neuroalgo",
   youtube: "https://youtube.com/@neuroalgo",
