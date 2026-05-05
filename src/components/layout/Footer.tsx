@@ -40,12 +40,12 @@ export const Footer = () => {
                   const email = String(fd.get("email") || "");
                   if (!email) return;
                   const { supabase } = await import("@/integrations/supabase/client");
-                  const { toast } = await import("@/hooks/use-toast");
+                  const { toast } = await import("sonner");
                   const { error } = await supabase.from("newsletter_subscribers").insert({ email, source: "footer" });
                   if (error && !error.message.toLowerCase().includes("duplicate")) {
-                    toast.toast({ title: "Could not subscribe", description: error.message, variant: "destructive" });
+                    toast.error("Could not subscribe: " + error.message);
                   } else {
-                    toast.toast({ title: "Subscribed!", description: "Thanks — we'll be in touch." });
+                    toast.success("Subscribed! Thanks — we'll be in touch.");
                     (e.target as HTMLFormElement).reset();
                   }
                 }}
