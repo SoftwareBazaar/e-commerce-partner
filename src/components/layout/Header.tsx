@@ -44,7 +44,7 @@ export const Header = () => {
     >
       <div className="container-tight flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex items-center group" aria-label="NeuroAlgo Forex Edge home">
-          <Brand size={36} />
+          <Brand size={48} />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
