@@ -191,7 +191,10 @@ export async function sendEmailNotification(
       },
     });
 
+    console.log("[emailService] Edge function response:", response);
+
     if (response.error) {
+      console.error("[emailService] Edge function error:", response.error);
       throw response.error;
     }
 
