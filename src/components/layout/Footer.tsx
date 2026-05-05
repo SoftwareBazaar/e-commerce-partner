@@ -65,6 +65,8 @@ export const Footer = () => {
               <li><Link to="/custom-ea" className="hover:text-primary">Custom EA Request</Link></li>
               <li><Link to="/mentorship" className="hover:text-primary">Mentorship</Link></li>
               <li><Link to="/booking" className="hover:text-primary">Book a Call</Link></li>
+              <li><Link to="/blog" className="hover:text-primary">Blog</Link></li>
+              <li><Link to="/affiliate" className="hover:text-primary">Affiliate Program</Link></li>
               <li><Link to="/about" className="hover:text-primary">About</Link></li>
               <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
             </ul>
