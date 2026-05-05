@@ -43,6 +43,7 @@ export const Footer = () => {
                   try {
                     const { supabase } = await import("@/integrations/supabase/client");
                     const { toast } = await import("sonner");
+                    const { sendNewsletterWelcome } = await import("@/integrations/email/emailService");
                     
                     // Check if already subscribed
                     const { data: existing } = await supabase
@@ -52,29 +53,31 @@ export const Footer = () => {
                       .single();
                     
                     if (existing) {
-                      toast.success("You're already subscribed!");
+                      toast.success("You're already subscribed! Check your email for the guide.");
                       (e.target as HTMLFormElement).reset();
                       return;
                     }
                     
                     // Insert new subscriber
-                    const { error } = await supabase
+                    const { error: insertError } = await supabase
                       .from("newsletter_subscribers")
                       .insert({ email, source: "footer" });
                     
-                    if (error) {
-                      console.error("Newsletter subscription error:", error);
-                      // For now, show success anyway since we'll handle subscriptions manually
-                      toast.success("Thanks! We'll send you the guide via email.");
+                    // Send welcome email with guide
+                    const emailResult = await sendNewsletterWelcome(email);
+                    
+                    if (emailResult.success) {
+                      toast.success("Success! Check your email for the free EA setup guide.");
                     } else {
-                      toast.success("Subscribed! Check your email for the guide.");
+                      console.error("Email send error:", emailResult.error);
+                      toast.success("Subscribed! We'll send you the guide shortly.");
                     }
                     
                     (e.target as HTMLFormElement).reset();
                   } catch (err) {
                     console.error("Newsletter error:", err);
                     const { toast } = await import("sonner");
-                    toast.success("Thanks! We'll send you the guide via email.");
+                    toast.success("Thanks! We'll send you the guide via email shortly.");
                     (e.target as HTMLFormElement).reset();
                   }
                 }}

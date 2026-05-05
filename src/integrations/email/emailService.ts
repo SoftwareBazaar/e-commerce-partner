@@ -116,6 +116,38 @@ export const emailTemplates: Record<string, EmailTemplate> = {
       '</div>',
     variables: ["customerName", "productName", "orderId", "downloadUrl"],
   },
+  newsletterWelcome: {
+    id: "newsletter-welcome",
+    name: "Newsletter Welcome",
+    subject: "Your Free EA Setup Guide - NeuroAlgo Forex Edge",
+    htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
+      '<h2>Welcome to NeuroAlgo!</h2>' +
+      '<p>Hi there,</p>' +
+      '<p>Thanks for subscribing! Here is your free EA setup guide to help you get started with Expert Advisors.</p>' +
+      '<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">' +
+      '<h3 style="margin-top: 0;">Quick Start Guide</h3>' +
+      '<ol style="line-height: 1.8;">' +
+      '<li><strong>Download your EA</strong> - Get the .ex4 or .ex5 file</li>' +
+      '<li><strong>Open MetaTrader</strong> - MT4 or MT5</li>' +
+      '<li><strong>Install the EA</strong> - File → Open Data Folder → MQL4/MQL5 → Experts</li>' +
+      '<li><strong>Restart MetaTrader</strong> - Close and reopen</li>' +
+      '<li><strong>Attach to chart</strong> - Drag EA from Navigator to your chart</li>' +
+      '<li><strong>Enable AutoTrading</strong> - Click the AutoTrading button</li>' +
+      '</ol>' +
+      '<p><strong>Pro Tips:</strong></p>' +
+      '<ul style="line-height: 1.8;">' +
+      '<li>Always test on demo first</li>' +
+      '<li>Start with minimum lot sizes</li>' +
+      '<li>Check your broker allows EAs</li>' +
+      '<li>Keep VPS running 24/7 for best results</li>' +
+      '</ul>' +
+      '</div>' +
+      '<p>Need help? Reply to this email or contact us on WhatsApp: <strong>+254 791 282295</strong></p>' +
+      '<p>Ready to get started? <a href="https://e-commerce-partner.vercel.app/marketplace" style="color: #10b981; text-decoration: none;">Browse our marketplace</a></p>' +
+      '<p>Best regards,<br>Robert<br>NeuroAlgo Forex Edge</p>' +
+      '</div>',
+    variables: [],
+  },
 };
 
 /**
@@ -318,6 +350,19 @@ export async function sendDownloadLink(
       orderId,
       downloadUrl,
     },
+  });
+}
+
+/**
+ * Send newsletter welcome email
+ */
+export async function sendNewsletterWelcome(
+  subscriberEmail: string
+) {
+  return sendEmailNotification({
+    recipientEmail: subscriberEmail,
+    templateId: "newsletterWelcome",
+    templateVariables: {},
   });
 }
 
