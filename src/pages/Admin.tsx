@@ -319,7 +319,7 @@ const Admin = () => {
                   <div>
                     <p className="font-semibold">{o.product_name} <Badge variant="outline" className="ml-1">{o.plan}</Badge></p>
                     <p className="text-sm text-muted-foreground">{o.full_name} • {o.email} • {o.phone}</p>
-                    <p className="text-xs text-muted-foreground mt-1">${Number(o.amount).toFixed(0)} {o.referral_code && `• ref: ${o.referral_code}`} • {new Date(o.created_at).toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground mt-1">${Number(o.amount || 0).toFixed(0)} {o.referral_code && `• ref: ${o.referral_code}`} • {new Date(o.created_at).toLocaleString()}</p>
                     {o.notes && <p className="text-xs mt-1 whitespace-pre-wrap">{o.notes}</p>}
                   </div>
                   <select value={o.status} onChange={(e) => setStatus("orders", o.id, e.target.value)} className="h-9 rounded-md border border-border bg-input px-2 text-sm">

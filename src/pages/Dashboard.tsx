@@ -81,8 +81,8 @@ const Dashboard = () => {
                 {orders.map((o) => (
                   <div key={o.id} className="rounded-xl border border-border bg-gradient-card p-4 flex justify-between gap-4">
                     <div>
-                      <p className="font-semibold">{o.product_name} <Badge variant="outline" className="ml-1">{o.plan}</Badge></p>
-                      <p className="text-xs text-muted-foreground mt-1">${Number(o.amount).toFixed(0)} • {new Date(o.created_at).toLocaleString()}</p>
+                      <p className="font-semibold">{o.product_name} <Badge variant="outline" className="ml-1">{o.mode}</Badge></p>
+                      <p className="text-xs text-muted-foreground mt-1">${Number(o.amount || 0).toFixed(0)} • {new Date(o.created_at).toLocaleString()}</p>
                     </div>
                     <Badge variant="outline">{o.status}</Badge>
                   </div>

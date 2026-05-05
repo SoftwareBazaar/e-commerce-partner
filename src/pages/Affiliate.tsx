@@ -43,7 +43,7 @@ const Affiliate = () => {
   );
 
   const link = aff ? `${window.location.origin}/?ref=${aff.code}` : "";
-  const earned = orders.reduce((s, o) => s + Number(o.amount || 0), 0) * (aff?.commission_pct ?? 15) / 100;
+  const earned = orders.reduce((s, o) => s + (Number(o.amount) || 0), 0) * (aff?.commission_pct ?? 15) / 100;
 
   return (
     <section className="py-12">
@@ -98,7 +98,7 @@ const Affiliate = () => {
                         <p className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString()}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">${Number(o.amount).toFixed(0)}</p>
+                        <p className="font-semibold">${Number(o.amount || 0).toFixed(0)}</p>
                         <Badge variant="outline" className="text-[10px]">{o.status}</Badge>
                       </div>
                     </div>
