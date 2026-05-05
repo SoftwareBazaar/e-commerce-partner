@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "uvx",
+      "args": ["supabase-mcp@latest"],
+      "env": {
+        "SUPABASE_URL": "https://zowfbftptnkypdwsnbkhh.supabase.co",
+        "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_YGpw6w4ivFZH3g0uifUHAw_cTz5pSyRJWT",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["query_database", "execute_sql", "manage_auth"]
+    },
+    "sendgrid": {
+      "command": "uvx",
+      "args": ["sendgrid-mcp@latest"],
+      "env": {
+        "SENDGRID_API_KEY": "SG.your_sendgrid_api_key_here",
+        "SENDGRID_FROM_EMAIL": "neuroalgoforexedge@gmail.com",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["send_email"]
+    },
+    "vercel": {
+      "command": "uvx",
+      "args": ["vercel-mcp@latest"],
+      "env": {
+        "VERCEL_TOKEN": "your_vercel_token_here",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": ["deploy", "get_deployments"]
+    }
+  }
+}

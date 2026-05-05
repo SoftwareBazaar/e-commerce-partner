@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium dark trading platform design system. All colors HSL. */
+
+@layer base {
+  :root {
+    /* Base surfaces */
+    --background: 218 30% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 28% 9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 28% 9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Brand: neon emerald (bullish) */
+    --primary: 152 90% 52%;
+    --primary-foreground: 218 40% 6%;
+    --primary-glow: 152 95% 65%;
+
+    /* Secondary: electric cyan/blue */
+    --secondary: 195 95% 55%;
+    --secondary-foreground: 218 40% 6%;
+
+    --muted: 220 18% 14%;
+    --muted-foreground: 215 18% 65%;
+
+    --accent: 195 95% 55%;
+    --accent-foreground: 218 40% 6%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 152 90% 52%;
+    --warning: 38 95% 60%;
+
+    --border: 220 18% 16%;
+    --input: 220 20% 12%;
+    --ring: 152 90% 52%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(152 90% 52%), hsl(195 95% 55%));
+    --gradient-hero: linear-gradient(180deg, hsl(218 30% 6% / 0.4) 0%, hsl(218 30% 6%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(220 28% 11%) 0%, hsl(220 28% 8%) 100%);
+    --gradient-glow: radial-gradient(circle at top, hsl(152 90% 52% / 0.15), transparent 60%);
+
+    /* Shadows / glows */
+    --shadow-glow: 0 0 40px hsl(152 90% 52% / 0.35);
+    --shadow-glow-cyan: 0 0 40px hsl(195 95% 55% / 0.35);
+    --shadow-card: 0 8px 32px hsl(218 40% 2% / 0.5);
+    --shadow-elevated: 0 20px 60px -10px hsl(218 40% 2% / 0.7);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 220 28% 9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 152 90% 52%;
+    --sidebar-primary-foreground: 218 40% 6%;
+    --sidebar-accent: 220 18% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 18% 16%;
+    --sidebar-ring: 152 90% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    @apply tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-card {
+    background-image: var(--gradient-card);
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-cyan {
+    box-shadow: var(--shadow-glow-cyan);
+  }
+
+  .container-tight {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.4); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.7); }
+}
+
+.animate-fade-up { animation: fade-up 0.6s ease-out forwards; }
+.animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
