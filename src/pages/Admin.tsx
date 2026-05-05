@@ -130,19 +130,29 @@ const Admin = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [subs, setSubs] = useState<any[]>([]);
   const [editing, setEditing] = useState<Product | null>(null);
+  const [editingPost, setEditingPost] = useState<any | null>(null);
 
   const refresh = async () => {
-    const [p, r, b, m] = await Promise.all([
+    const [p, r, b, m, o, bp, ns] = await Promise.all([
       supabase.from("products").select("*").order("created_at", { ascending: false }),
       supabase.from("ea_requests").select("*").order("created_at", { ascending: false }),
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
       supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
+      supabase.from("orders").select("*").order("created_at", { ascending: false }),
+      supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
+      supabase.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }),
     ]);
     setProducts(p.data ?? []);
     setRequests(r.data ?? []);
     setBookings(b.data ?? []);
     setMessages(m.data ?? []);
+    setOrders(o.data ?? []);
+    setPosts(bp.data ?? []);
+    setSubs(ns.data ?? []);
   };
 
   useEffect(() => { refresh(); }, []);
@@ -154,7 +164,31 @@ const Admin = () => {
     else refresh();
   };
 
-  const setStatus = async (table: "ea_requests" | "bookings", id: string, status: string) => {
+  const deletePost = async (id: string) => {
+    if (!confirm("Delete this post?")) return;
+    await supabase.from("blog_posts").delete().eq("id", id);
+    refresh();
+  };
+
+  const savePost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      slug: String(fd.get("slug")),
+      title: String(fd.get("title")),
+      excerpt: String(fd.get("excerpt") || ""),
+      body: String(fd.get("body")),
+      cover_url: String(fd.get("cover_url") || "") || null,
+      published: fd.get("published") === "on",
+    };
+    const { error } = editingPost?.id
+      ? await supabase.from("blog_posts").update(payload).eq("id", editingPost.id)
+      : await supabase.from("blog_posts").insert(payload);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: "Saved" }); setEditingPost(null); refresh(); }
+  };
+
+  const setStatus = async (table: "ea_requests" | "bookings" | "orders", id: string, status: string) => {
     await supabase.from(table).update({ status }).eq("id", id);
     refresh();
   };
@@ -176,6 +210,25 @@ const Admin = () => {
           <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader><DialogTitle>{editing?.id ? "Edit Product" : "New Product"}</DialogTitle></DialogHeader>
             {editing && <ProductForm initial={editing} onDone={() => { setEditing(null); refresh(); }} />}
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={!!editingPost} onOpenChange={(o) => !o && setEditingPost(null)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader><DialogTitle>{editingPost?.id ? "Edit Post" : "New Post"}</DialogTitle></DialogHeader>
+            {editingPost && (
+              <form onSubmit={savePost} className="space-y-3">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div><Label>Slug</Label><Input name="slug" required defaultValue={editingPost.slug} className="mt-1 bg-input" /></div>
+                  <div><Label>Title</Label><Input name="title" required defaultValue={editingPost.title} className="mt-1 bg-input" /></div>
+                </div>
+                <div><Label>Cover image URL</Label><Input name="cover_url" defaultValue={editingPost.cover_url ?? ""} className="mt-1 bg-input" /></div>
+                <div><Label>Excerpt</Label><Input name="excerpt" defaultValue={editingPost.excerpt ?? ""} className="mt-1 bg-input" /></div>
+                <div><Label>Body (markdown / plain text)</Label><Textarea name="body" required rows={10} defaultValue={editingPost.body ?? ""} className="mt-1 bg-input font-mono text-xs" /></div>
+                <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked={editingPost.published} /> Published</label>
+                <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">Save post</Button>
+              </form>
+            )}
           </DialogContent>
         </Dialog>
 
