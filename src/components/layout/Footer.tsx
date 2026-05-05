@@ -34,11 +34,23 @@ export const Footer = () => {
               <p className="text-sm font-medium mb-3">Get our free EA setup guide</p>
               <form
                 className="flex gap-2 max-w-sm"
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
+                  const fd = new FormData(e.currentTarget);
+                  const email = String(fd.get("email") || "");
+                  if (!email) return;
+                  const { supabase } = await import("@/integrations/supabase/client");
+                  const { toast } = await import("@/hooks/use-toast");
+                  const { error } = await supabase.from("newsletter_subscribers").insert({ email, source: "footer" });
+                  if (error && !error.message.toLowerCase().includes("duplicate")) {
+                    toast.toast({ title: "Could not subscribe", description: error.message, variant: "destructive" });
+                  } else {
+                    toast.toast({ title: "Subscribed!", description: "Thanks — we'll be in touch." });
+                    (e.target as HTMLFormElement).reset();
+                  }
                 }}
               >
-                <Input type="email" placeholder="you@email.com" required className="bg-input border-border" />
+                <Input name="email" type="email" placeholder="you@email.com" required className="bg-input border-border" />
                 <Button type="submit" className="bg-gradient-primary text-primary-foreground">
                   <Send className="h-4 w-4" />
                 </Button>

@@ -15,6 +15,7 @@ const Booking = () => {
   const [params] = useSearchParams();
   const [submitted, setSubmitted] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [lastBooking, setLastBooking] = useState<{ pkg: string; date: string; time: string; name: string } | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -24,7 +25,7 @@ const Booking = () => {
     e.preventDefault();
     setBusy(true);
     const fd = new FormData(e.currentTarget);
-    const { error } = await supabase.from("bookings").insert({
+    const payload = {
       user_id: user?.id ?? null,
       package_slug: String(fd.get("package")),
       full_name: String(fd.get("name")),
@@ -34,15 +35,32 @@ const Booking = () => {
       preferred_time: String(fd.get("time") || ""),
       experience: String(fd.get("experience")),
       goals: String(fd.get("goals")),
-    });
+    };
+    const { error } = await supabase.from("bookings").insert(payload);
     setBusy(false);
     if (error) {
       toast({ title: "Booking failed", description: error.message, variant: "destructive" });
       return;
     }
+    setLastBooking({ pkg: payload.package_slug, date: payload.preferred_date, time: payload.preferred_time, name: payload.full_name });
     toast({ title: "Booking received", description: "You'll receive a confirmation email shortly." });
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const downloadCalendar = async () => {
+    if (!lastBooking) return;
+    const { buildIcs, downloadIcs } = await import("@/lib/ics");
+    const start = new Date(`${lastBooking.date}T${lastBooking.time || "10:00"}:00`);
+    const pkg = packages.find((p) => p.slug === lastBooking.pkg);
+    const ics = buildIcs({
+      uid: `${Date.now()}`,
+      title: `NeuroAlgo: ${pkg?.name ?? "Session"}`,
+      description: `Session with NeuroAlgo Forex Edge for ${lastBooking.name}. We'll send the Google Meet link by email.`,
+      start,
+      durationMinutes: 60,
+    });
+    downloadIcs(`neuroalgo-${lastBooking.pkg}.ics`, ics);
   };
 
   if (submitted) {
@@ -56,7 +74,10 @@ const Booking = () => {
           <p className="mt-3 text-muted-foreground">
             We'll confirm your slot via email within a few hours and send the Google Meet link.
           </p>
-          <Button onClick={() => setSubmitted(false)} variant="outline" className="mt-8">Book another session</Button>
+          <div className="mt-8 flex gap-2 justify-center flex-wrap">
+            <Button onClick={downloadCalendar} className="bg-gradient-primary text-primary-foreground">Add to Calendar (.ics)</Button>
+            <Button onClick={() => setSubmitted(false)} variant="outline">Book another session</Button>
+          </div>
         </div>
       </section>
     );
