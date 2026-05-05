@@ -14,12 +14,14 @@ const Dashboard = () => {
   const { toast } = useToast();
   const [requests, setRequests] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     if (!user) return;
     supabase.from("ea_requests").select("*").order("created_at", { ascending: false }).then(({ data }) => setRequests(data ?? []));
     supabase.from("bookings").select("*").order("created_at", { ascending: false }).then(({ data }) => setBookings(data ?? []));
+    supabase.from("orders").select("*").order("created_at", { ascending: false }).then(({ data }) => setOrders(data ?? []));
     supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => setProfile(data));
   }, [user]);
 
@@ -42,7 +44,8 @@ const Dashboard = () => {
             <h1 className="font-display text-3xl font-bold">My Dashboard</h1>
             <p className="text-muted-foreground text-sm">{user?.email}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <Button asChild variant="outline"><Link to="/affiliate">Affiliate</Link></Button>
             {isAdmin ? (
               <Button asChild className="bg-gradient-primary text-primary-foreground"><Link to="/admin">Admin Panel</Link></Button>
             ) : (
@@ -62,12 +65,31 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="requests">
+        <Tabs defaultValue="orders">
           <TabsList>
+            <TabsTrigger value="orders">Orders ({orders.length})</TabsTrigger>
             <TabsTrigger value="requests">EA Requests ({requests.length})</TabsTrigger>
             <TabsTrigger value="bookings">Bookings ({bookings.length})</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="orders" className="mt-6">
+            {orders.length === 0 ? (
+              <p className="text-muted-foreground">No orders yet. <Link to="/marketplace" className="text-primary">Browse marketplace</Link>.</p>
+            ) : (
+              <div className="grid gap-3">
+                {orders.map((o) => (
+                  <div key={o.id} className="rounded-xl border border-border bg-gradient-card p-4 flex justify-between gap-4">
+                    <div>
+                      <p className="font-semibold">{o.product_name} <Badge variant="outline" className="ml-1">{o.plan}</Badge></p>
+                      <p className="text-xs text-muted-foreground mt-1">${Number(o.amount).toFixed(0)} • {new Date(o.created_at).toLocaleString()}</p>
+                    </div>
+                    <Badge variant="outline">{o.status}</Badge>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
 
           <TabsContent value="requests" className="mt-6">
             {requests.length === 0 ? (
