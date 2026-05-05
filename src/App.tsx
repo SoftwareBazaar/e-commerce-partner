@@ -24,42 +24,72 @@ import BlogPost from "./pages/BlogPost";
 import Affiliate from "./pages/Affiliate";
 import NotFound from "./pages/NotFound.tsx";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <CartProvider>
-            <Routes>
-              <Route element={<Layout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/marketplace" element={<Marketplace />} />
-                <Route path="/marketplace/:slug" element={<ProductDetail />} />
-                <Route path="/custom-ea" element={<CustomEA />} />
-                <Route path="/mentorship" element={<Mentorship />} />
-                <Route path="/booking" element={<Booking />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/affiliate" element={<RequireAuth><Affiliate /></RequireAuth>} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
-                <Route path="/admin" element={<RequireAuth adminOnly><Admin /></RequireAuth>} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </CartProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+// Add global error handler
+window.addEventListener('error', (event) => {
+  console.error('[Global Error]', {
+    message: event.message,
+    filename: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+    error: event.error
+  });
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('[Unhandled Promise Rejection]', event.reason);
+});
+
+console.log('[App] Initializing React app...');
+
+const App = () => {
+  console.log('[App] Rendering App component');
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <CartProvider>
+              <Routes>
+                <Route element={<Layout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/marketplace/:slug" element={<ProductDetail />} />
+                  <Route path="/custom-ea" element={<CustomEA />} />
+                  <Route path="/mentorship" element={<Mentorship />} />
+                  <Route path="/booking" element={<Booking />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/affiliate" element={<RequireAuth><Affiliate /></RequireAuth>} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+                  <Route path="/admin" element={<RequireAuth adminOnly><Admin /></RequireAuth>} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </CartProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
+
+console.log('[App] App component defined');
 
 export default App;
