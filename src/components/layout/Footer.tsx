@@ -24,7 +24,7 @@ export const Footer = () => {
         <div className="grid gap-12 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center" aria-label={`${BRAND.full} home`}>
-              <Brand size={56} />
+              <Brand size={64} />
             </Link>
             <p className="mt-4 max-w-md text-sm text-muted-foreground leading-relaxed">
               {BRAND.tagline} Premium Expert Advisors, indicators and bots, plus 1-on-1 mentorship for serious traders.

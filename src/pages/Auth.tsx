@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +14,8 @@ const Auth = () => {
   const [params] = useSearchParams();
   const redirect = params.get("redirect") ?? "/dashboard";
   const [busy, setBusy] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
   const { toast } = useToast();
 
   if (!loading && user) return <Navigate to={redirect} replace />;
@@ -65,7 +67,20 @@ const Auth = () => {
             <TabsContent value="login">
               <form onSubmit={onLogin} className="space-y-4 mt-4">
                 <div><Label>Email</Label><Input name="email" type="email" required className="mt-1.5 bg-input" /></div>
-                <div><Label>Password</Label><Input name="password" type="password" required minLength={6} className="mt-1.5 bg-input" /></div>
+                <div>
+                  <Label>Password</Label>
+                  <div className="relative mt-1.5">
+                    <Input name="password" type={showLoginPassword ? "text" : "password"} required minLength={6} className="bg-input pr-10" />
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label={showLoginPassword ? "Hide password" : "Show password"}
+                    >
+                      {showLoginPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
                 <Button disabled={busy} type="submit" className="w-full bg-gradient-primary text-primary-foreground">
                   {busy ? "Signing in..." : "Sign In"}
                 </Button>
@@ -75,7 +90,20 @@ const Auth = () => {
               <form onSubmit={onSignup} className="space-y-4 mt-4">
                 <div><Label>Name</Label><Input name="name" required className="mt-1.5 bg-input" /></div>
                 <div><Label>Email</Label><Input name="email" type="email" required className="mt-1.5 bg-input" /></div>
-                <div><Label>Password</Label><Input name="password" type="password" required minLength={6} className="mt-1.5 bg-input" /></div>
+                <div>
+                  <Label>Password</Label>
+                  <div className="relative mt-1.5">
+                    <Input name="password" type={showSignupPassword ? "text" : "password"} required minLength={6} className="bg-input pr-10" />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignupPassword(!showSignupPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label={showSignupPassword ? "Hide password" : "Show password"}
+                    >
+                      {showSignupPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
                 <Button disabled={busy} type="submit" className="w-full bg-gradient-primary text-primary-foreground">
                   {busy ? "Creating..." : "Create Account"}
                 </Button>

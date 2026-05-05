@@ -28,17 +28,17 @@ const About = () => (
           <h2 className="font-display text-3xl font-bold">The story</h2>
           <div className="mt-4 space-y-4 text-muted-foreground leading-relaxed">
             <p>
-              Eight years ago Robert blew his first three live accounts. The fourth one survived — not because he found a magic indicator, but because he learned to code his own rules and let the algorithm enforce his discipline.
+              Eight years ago I blew my first three live accounts. The fourth one survived — not because I found a magic indicator, but because I learned to code my own rules and let the algorithm enforce my discipline.
             </p>
             <p>
-              Today NeuroAlgo sells the same EAs and indicators Robert and his team trade on real money, and offers 1-on-1 mentorship to traders ready to take it seriously.
+              Today NeuroAlgo sells the same EAs and indicators I and my team trade on real money, and offers 1-on-1 mentorship to traders ready to take it seriously.
             </p>
             <p>
               No signal groups. No copy-trade lottery. Just well-designed, well-documented tools and honest education.
             </p>
           </div>
           <Button asChild className="mt-6 bg-gradient-primary text-primary-foreground">
-            <Link to="/booking">Book a free call with Robert</Link>
+            <Link to="/booking">Book a free call with me</Link>
           </Button>
         </div>
 
