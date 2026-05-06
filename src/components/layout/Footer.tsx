@@ -46,11 +46,16 @@ export const Footer = () => {
                     const { sendNewsletterWelcome } = await import("@/integrations/email/emailService");
                     
                     // Check if already subscribed
-                    const { data: existing } = await supabase
+                    const { data: existing, error: checkError } = await supabase
                       .from("newsletter_subscribers")
                       .select("id")
                       .eq("email", email)
-                      .single();
+                      .maybeSingle();
+                    
+                    if (checkError) {
+                      console.error("Error checking subscription:", checkError);
+                      throw checkError;
+                    }
                     
                     if (existing) {
                       toast.success("You're already subscribed! Check your email for the guide.");
@@ -61,7 +66,14 @@ export const Footer = () => {
                     // Insert new subscriber
                     const { error: insertError } = await supabase
                       .from("newsletter_subscribers")
-                      .insert({ email, source: "footer" });
+                      .insert({ email, source: "footer" })
+                      .select()
+                      .single();
+                    
+                    if (insertError) {
+                      console.error("Error inserting subscriber:", insertError);
+                      throw insertError;
+                    }
                     
                     // Send welcome email with guide
                     const emailResult = await sendNewsletterWelcome(email);
