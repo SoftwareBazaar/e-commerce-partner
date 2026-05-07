@@ -187,7 +187,7 @@ export async function sendEmailNotification(
         to: notification.recipientEmail,
         subject,
         html: htmlContent,
-        from: process.env.VITE_SENDGRID_FROM_EMAIL || "neuroalgoforexedge@gmail.com",
+        from: import.meta.env.VITE_SENDGRID_FROM_EMAIL || "neuroalgoforexedge@gmail.com",
       },
     });
 
