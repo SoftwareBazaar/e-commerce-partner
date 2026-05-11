@@ -172,18 +172,18 @@ const Booking = () => {
                 </select>
               </div>
               <div>
-                <Label htmlFor="date" className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-primary" />
+                <Label htmlFor="date" className="flex items-center gap-2 text-base font-semibold">
+                  <Calendar className="h-6 w-6 text-primary drop-shadow-lg" strokeWidth={2.5} />
                   Preferred date *
                 </Label>
-                <Input id="date" name="date" type="date" required className="mt-1.5 bg-input border-border" />
+                <Input id="date" name="date" type="date" required className="mt-1.5 bg-input border-border text-base h-12 px-4 [&::-webkit-calendar-picker-indicator]:w-6 [&::-webkit-calendar-picker-indicator]:h-6 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-125 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert-0" />
               </div>
               <div>
-                <Label htmlFor="time" className="flex items-center gap-1.5">
-                  <Clock className="h-4 w-4 text-primary" />
+                <Label htmlFor="time" className="flex items-center gap-2 text-base font-semibold">
+                  <Clock className="h-6 w-6 text-primary drop-shadow-lg" strokeWidth={2.5} />
                   Preferred time
                 </Label>
-                <Input id="time" name="time" type="time" className="mt-1.5 bg-input border-border" />
+                <Input id="time" name="time" type="time" className="mt-1.5 bg-input border-border text-base h-12 px-4 [&::-webkit-calendar-picker-indicator]:w-6 [&::-webkit-calendar-picker-indicator]:h-6 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:brightness-125" />
               </div>
             </div>
 
