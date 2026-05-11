@@ -124,5 +124,5 @@ export const SOCIALS = {
   tiktok: "https://tiktok.com/@neuroalgo",
   twitter: "https://x.com/neuroalgo",
   facebook: "https://facebook.com/neuroalgo",
-  email: "hello@neuroalgo.com",
+  email: "neuroalgoforexedge@gmail.com",
 };
