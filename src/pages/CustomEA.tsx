@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, Code2, Upload } from "lucide-react";
+import { CheckCircle2, Code2, Upload, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,8 +30,9 @@ const CustomEA = () => {
     const { data, error } = await supabase.from("custom_ea_requests").insert({
       client_name: clientName,
       client_email: clientEmail,
-      phone: String(fd.get("phone") || ""),
-      strategy: strategy,
+      client_phone: String(fd.get("phone") || ""),
+      platform: String(fd.get("platform") || "MT5"),
+      strategy_description: strategy,
       entry_rules: String(fd.get("entry") || ""),
       exit_rules: String(fd.get("exit") || ""),
       indicators: String(fd.get("indicators") || ""),
@@ -189,7 +190,10 @@ const CustomEA = () => {
               <legend className="font-display text-lg font-semibold mb-2">Project</legend>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <Label htmlFor="deadline">Deadline</Label>
+                  <Label htmlFor="deadline" className="flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    Deadline
+                  </Label>
                   <Input id="deadline" name="deadline" type="date" className="mt-1.5 bg-input border-border" />
                 </div>
                 <div>
