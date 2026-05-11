@@ -189,12 +189,12 @@ const CustomEA = () => {
             <fieldset className="space-y-4">
               <legend className="font-display text-lg font-semibold mb-2">Project</legend>
               <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <Label htmlFor="deadline" className="flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4 text-primary" />
+              <div>
+                  <Label htmlFor="deadline" className="flex items-center gap-2 text-base font-semibold">
+                    <Calendar className="h-6 w-6 text-primary drop-shadow-lg" strokeWidth={2.5} />
                     Deadline
                   </Label>
-                  <Input id="deadline" name="deadline" type="date" className="mt-1.5 bg-input border-border" />
+                  <Input id="deadline" name="deadline" type="date" className="mt-1.5 bg-input border-border text-base h-12 px-4" />
                 </div>
                 <div>
                   <Label htmlFor="budget">Budget range *</Label>

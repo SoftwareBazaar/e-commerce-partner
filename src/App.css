@@ -5,6 +5,42 @@
   text-align: center;
 }
 
+/* ============================================================================
+   DATE & TIME PICKER ICON STYLING - MAKE ICONS LARGER & MORE VISIBLE
+   ============================================================================ */
+
+/* Date picker icon - larger and more visible */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  width: 28px !important;
+  height: 28px !important;
+  cursor: pointer !important;
+  filter: invert(0.8) brightness(1.2) !important;
+  padding: 4px !important;
+}
+
+/* Time picker icon - larger and more visible */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  width: 28px !important;
+  height: 28px !important;
+  cursor: pointer !important;
+  filter: invert(0.8) brightness(1.2) !important;
+  padding: 4px !important;
+}
+
+/* Ensure input fields are tall enough for better UX */
+input[type="date"],
+input[type="time"] {
+  height: 48px !important;
+  padding: 8px 12px !important;
+  font-size: 16px !important;
+}
+
+/* Hover effect for better interactivity */
+input[type="date"]:hover::-webkit-calendar-picker-indicator,
+input[type="time"]:hover::-webkit-calendar-picker-indicator {
+  filter: invert(0.9) brightness(1.3) !important;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
