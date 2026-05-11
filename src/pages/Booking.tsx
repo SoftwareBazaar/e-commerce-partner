@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CalendarCheck, CheckCircle2 } from "lucide-react";
+import { CalendarCheck, CheckCircle2, Calendar, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -172,11 +172,17 @@ const Booking = () => {
                 </select>
               </div>
               <div>
-                <Label htmlFor="date">Preferred date *</Label>
+                <Label htmlFor="date" className="flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4 text-primary" />
+                  Preferred date *
+                </Label>
                 <Input id="date" name="date" type="date" required className="mt-1.5 bg-input border-border" />
               </div>
               <div>
-                <Label htmlFor="time">Preferred time</Label>
+                <Label htmlFor="time" className="flex items-center gap-1.5">
+                  <Clock className="h-4 w-4 text-primary" />
+                  Preferred time
+                </Label>
                 <Input id="time" name="time" type="time" className="mt-1.5 bg-input border-border" />
               </div>
             </div>
