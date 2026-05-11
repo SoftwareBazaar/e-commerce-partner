@@ -24,8 +24,10 @@ const Contact = () => {
     const senderEmail = String(fd.get("email"));
     const subject = String(fd.get("subject") || "General Inquiry");
     const message = String(fd.get("message"));
+    const messageId = `MSG-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
     const { data, error } = await supabase.from("contact_submissions").insert({
+      message_id: messageId,
       sender_name: senderName,
       sender_email: senderEmail,
       subject: subject,
@@ -40,7 +42,6 @@ const Contact = () => {
     }
 
     // Send confirmation email
-    const messageId = data?.[0]?.id || `MSG-${Date.now()}`;
     const emailResult = await sendContactFormConfirmation(
       senderEmail,
       senderName,
