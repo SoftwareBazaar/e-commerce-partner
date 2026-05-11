@@ -17,7 +17,7 @@ const About = () => (
         <Badge variant="outline" className="border-primary/40 text-primary mb-3">About</Badge>
         <h1 className="font-display text-4xl md:text-5xl font-bold">Built by a trader, for traders.</h1>
         <p className="mt-4 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          NeuroAlgo is the home of premium Expert Advisors, indicators and mentorship — created by Robert and a small team of working traders who code their own tools.
+          NeuroAlgo Forex Edge delivers premium Expert Advisors, advanced indicators, and professional mentorship built for disciplined, high-performance trading. Designed with real-market experience to help traders achieve precision, confidence, and consistency.
         </p>
       </div>
     </section>
@@ -28,13 +28,13 @@ const About = () => (
           <h2 className="font-display text-3xl font-bold">The story</h2>
           <div className="mt-4 space-y-4 text-muted-foreground leading-relaxed">
             <p>
-              Eight years ago I blew my first three live accounts. The fourth one survived — not because I found a magic indicator, but because I learned to code my own rules and let the algorithm enforce my discipline.
+              Eight years ago, NeuroAlgo Forex Edge was built from real trading experience, discipline, and consistency. After learning the hard lessons of emotional trading and blown accounts, we focused on creating professional trading systems driven by logic, risk management, and precision.
             </p>
             <p>
-              Today NeuroAlgo sells the same EAs and indicators I and my team trade on real money, and offers 1-on-1 mentorship to traders ready to take it seriously.
+              Today, we develop battle-tested EAs, indicators, and mentorship programs designed for traders who value structure, professionalism, and long-term growth.
             </p>
             <p>
-              No signal groups. No copy-trade lottery. Just well-designed, well-documented tools and honest education.
+              Empowering traders through smart tools, proven strategies, and disciplined execution to achieve confidence and consistency in the financial markets.
             </p>
           </div>
           <Button asChild className="mt-6 bg-gradient-primary text-primary-foreground">
