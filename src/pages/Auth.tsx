@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Eye, EyeOff } from "lucide-react";
+import { TrendingUp, Eye, EyeOff, Chrome } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -49,6 +49,18 @@ const Auth = () => {
     else toast({ title: "Welcome!", description: "Account created." });
   };
 
+  const onGoogleSignIn = async () => {
+    setBusy(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+      },
+    });
+    setBusy(false);
+    if (error) toast({ title: "Google sign-in failed", description: error.message, variant: "destructive" });
+  };
+
   return (
     <section className="py-20 min-h-[80vh] flex items-center">
       <div className="container-tight max-w-md w-full">
@@ -85,6 +97,19 @@ const Auth = () => {
                   {busy ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
+
+              {/* Google Sign-In Button */}
+              <div className="mt-4 pt-4 border-t border-border">
+                <Button
+                  disabled={busy}
+                  onClick={onGoogleSignIn}
+                  variant="outline"
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <Chrome className="h-4 w-4" />
+                  Sign in with Google
+                </Button>
+              </div>
             </TabsContent>
             <TabsContent value="signup">
               <form onSubmit={onSignup} className="space-y-4 mt-4">
@@ -108,6 +133,19 @@ const Auth = () => {
                   {busy ? "Creating..." : "Create Account"}
                 </Button>
               </form>
+
+              {/* Google Sign-In Button */}
+              <div className="mt-4 pt-4 border-t border-border">
+                <Button
+                  disabled={busy}
+                  onClick={onGoogleSignIn}
+                  variant="outline"
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <Chrome className="h-4 w-4" />
+                  Sign up with Google
+                </Button>
+              </div>
             </TabsContent>
           </Tabs>
         </div>
