@@ -19,19 +19,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const checkAdminRole = async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .eq("role", "admin")
+        .maybeSingle();
+      setIsAdmin(!!data);
+    } catch (err) {
+      console.error("Error checking admin role:", err);
+      setIsAdmin(false);
+    }
+  };
+
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
       if (s?.user) {
-        setTimeout(async () => {
-          const { data } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", s.user.id)
-            .eq("role", "admin")
-            .maybeSingle();
-          setIsAdmin(!!data);
-        }, 0);
+        checkAdminRole(s.user.id);
       } else {
         setIsAdmin(false);
       }
@@ -40,13 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
       if (data.session?.user) {
-        const { data: r } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", data.session.user.id)
-          .eq("role", "admin")
-          .maybeSingle();
-        setIsAdmin(!!r);
+        await checkAdminRole(data.session.user.id);
       }
       setLoading(false);
     });
