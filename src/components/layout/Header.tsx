@@ -1,8 +1,15 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { LayoutDashboard, Menu, ShieldCheck, ShoppingCart, User } from "lucide-react";
+import { LayoutDashboard, Menu, ShieldCheck, ShoppingCart, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { Brand } from "@/components/Brand";
@@ -20,7 +27,7 @@ const nav = [
 
 export const Header = () => {
   const { count, setOpen } = useCart();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { pathname } = useLocation();
@@ -33,6 +40,10 @@ export const Header = () => {
   }, []);
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <header
@@ -91,9 +102,43 @@ export const Header = () => {
           )}
 
           {user ? (
-            <Button asChild variant="ghost" size="icon" aria-label="Dashboard" className="hidden md:inline-flex">
-              <Link to="/dashboard"><LayoutDashboard className="h-5 w-5" /></Link>
-            </Button>
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="User menu" className="hidden md:inline-flex">
+                    <div className="h-5 w-5 rounded-full bg-gradient-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
+                      {user.email?.[0].toUpperCase() || "U"}
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5">
+                    <p className="text-sm font-medium text-foreground">{user.email}</p>
+                    <p className="text-xs text-muted-foreground">Logged in</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="cursor-pointer">
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      My Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer text-primary">
+                        <ShieldCheck className="h-4 w-4 mr-2" />
+                        Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           ) : (
             <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
               <Link to="/auth"><User className="h-4 w-4 mr-1" /> Sign In</Link>
