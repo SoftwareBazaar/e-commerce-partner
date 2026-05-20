@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [bookings, setBookings] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
+  const [adminExists, setAdminExists] = useState(true); // Assume admin exists by default
 
   useEffect(() => {
     if (!user) return;
@@ -24,6 +25,11 @@ const Dashboard = () => {
       supabase.from("bookings").select("*").order("created_at", { ascending: false }).then(({ data }) => setBookings(data ?? [])).catch(() => setBookings([]));
       supabase.from("orders").select("*").order("created_at", { ascending: false }).then(({ data }) => setOrders(data ?? [])).catch(() => setOrders([]));
       supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => setProfile(data)).catch(() => setProfile(null));
+      
+      // Check if admin already exists
+      supabase.from("user_roles").select("*").eq("role", "admin").maybeSingle().then(({ data }) => {
+        setAdminExists(!!data);
+      }).catch(() => setAdminExists(true));
     } catch (err) {
       console.error("Error loading dashboard data:", err);
     }
@@ -52,7 +58,7 @@ const Dashboard = () => {
             <Button asChild variant="outline"><Link to="/affiliate">Affiliate</Link></Button>
             {isAdmin ? (
               <Button asChild className="bg-gradient-primary text-primary-foreground"><Link to="/admin">Admin Panel</Link></Button>
-            ) : (
+            ) : !adminExists ? (
               <Button
                 variant="outline"
                 onClick={async () => {
@@ -64,7 +70,7 @@ const Dashboard = () => {
               >
                 Claim admin (first-time setup)
               </Button>
-            )}
+            ) : null}
             <Button variant="outline" onClick={signOut}>Sign out</Button>
           </div>
         </div>
