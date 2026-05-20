@@ -1,0 +1,60 @@
+╔══════════════════════════════════════════════════════════════╗
+║           🔴 API KEY UPDATE REQUIRED 🔴                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+CURRENT STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✅ URL is correct: zowfbftptnkypdwsnbkh.supabase.co
+  ✅ Project ID is correct: zowfbftptnkypdwsnbkh
+  ❌ API Key is WRONG: Getting 401 Unauthorized
+
+ERROR MESSAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  401 (Unauthorized)
+  Invalid API key
+  Hint: Double check your Supabase anon or service_role API key
+
+THE FIX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Update ONE MORE environment variable in Vercel:
+
+  Variable: VITE_SUPABASE_PUBLISHABLE_KEY
+  
+  New Value (copy exactly):
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NjM4NTUsImV4cCI6MjA5MzMzOTg1NX0.qtE931OtEmApjvaoeKnB3Cffy4C9Mn_cDTJcsGIKHGE
+
+QUICK STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. Go to: https://vercel.com/dashboard
+  2. Select project: e-commerce-partner
+  3. Settings → Environment Variables
+  4. Edit: VITE_SUPABASE_PUBLISHABLE_KEY
+  5. Paste the new value above
+  6. Save
+  7. Deployments → ••• → Redeploy
+  8. Wait 2-3 minutes
+  9. Test newsletter subscription
+
+ALTERNATIVE: GET FROM SUPABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. Go to: https://supabase.com/dashboard/project/zowfbftptnkypdwsnbkh
+  2. Settings → API
+  3. Copy "anon public" key
+  4. Use that in Vercel
+
+ALL REQUIRED VERCEL ENV VARS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  VITE_SUPABASE_URL
+    https://zowfbftptnkypdwsnbkh.supabase.co
+
+  VITE_SUPABASE_PROJECT_ID
+    zowfbftptnkypdwsnbkh
+
+  VITE_SUPABASE_PUBLISHABLE_KEY
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NjM4NTUsImV4cCI6MjA5MzMzOTg1NX0.qtE931OtEmApjvaoeKnB3Cffy4C9Mn_cDTJcsGIKHGE
+
+╔══════════════════════════════════════════════════════════════╗
+║  📖 READ: FIX_API_KEY_NOW.md for detailed instructions       ║
+║  ⏱️  TIME: 5 minutes to fix                                  ║
+║  🎯 RESULT: Newsletter will work after this!                 ║
+╚══════════════════════════════════════════════════════════════╝

@@ -1,0 +1,120 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║              🎯 FINAL ACTION - UPDATE API KEY 🎯                ║
+║                                                                  ║
+║                    90% COMPLETE - ONE STEP LEFT                 ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+WHAT TO DO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to Vercel Dashboard
+   https://vercel.com/dashboard
+
+2. Select Your Project
+   e-commerce-partner
+
+3. Navigate to Settings
+   Click: Settings tab → Environment Variables
+
+4. Find the Variable
+   VITE_SUPABASE_PUBLISHABLE_KEY
+
+5. Edit It
+   Click the pencil icon
+
+6. Replace the Value
+   Paste this (copy exactly):
+   
+   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NjM4NTUsImV4cCI6MjA5MzMzOTg1NX0.qtE931OtEmApjvaoeKnB3Cffy4C9Mn_cDTJcsGIKHGE
+
+7. Save
+   Click: Save button
+
+8. Redeploy
+   Go to Deployments → ••• → Redeploy
+
+9. Wait
+   2-3 minutes for build to complete
+
+10. Test
+    Go to your site → Footer → Try newsletter
+
+
+RESULT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Newsletter subscription works
+✅ No more 401 errors
+✅ Data saves to Supabase
+✅ Success message displays
+✅ Emails send successfully
+
+
+TIME REQUIRED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Update:    5 minutes
+Redeploy:  2-3 minutes
+Test:      2 minutes
+─────────────────────
+Total:     ~10 minutes
+
+
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 START_HERE_FINAL_STEP.md
+   Quick overview and next steps
+
+📖 FINAL_API_KEY_UPDATE_GUIDE.md
+   Detailed step-by-step instructions
+
+📖 FINAL_CHECKLIST.md
+   Complete verification checklist
+
+📖 COMPLETE_JOURNEY_SUMMARY.md
+   Full context and what was fixed
+
+
+QUICK REFERENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Variable Name:
+  VITE_SUPABASE_PUBLISHABLE_KEY
+
+New Value:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NjM4NTUsImV4cCI6MjA5MzMzOTg1NX0.qtE931OtEmApjvaoeKnB3Cffy4C9Mn_cDTJcsGIKHGE
+
+Environment:
+  Production
+
+Dashboard:
+  https://vercel.com/dashboard
+
+
+STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Code fixed
+✅ URL corrected
+✅ Project ID corrected
+✅ Deployed to production
+✅ Vercel URL updated
+✅ Vercel Project ID updated
+⏳ API Key needs update (THIS STEP)
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  👉 START: Go to https://vercel.com/dashboard                   ║
+║                                                                  ║
+║  📖 GUIDE: Read START_HERE_FINAL_STEP.md                        ║
+║                                                                  ║
+║  ⏱️  TIME: ~10 minutes                                           ║
+║                                                                  ║
+║  🎉 RESULT: Newsletter subscription works perfectly!            ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝

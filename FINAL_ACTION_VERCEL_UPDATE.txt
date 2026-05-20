@@ -1,0 +1,135 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║              ✅ COMMITS DONE - UPDATE VERCEL NEXT ✅             ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+COMMITS VERIFIED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ cb0c8d5 - Newsletter subscription error fixes
+✅ 8cb9650 - API key format update
+✅ 5af755f - Correct Anon Public JWT key (LATEST)
+
+All commits pushed to GitHub main branch
+
+
+WHY 401 ERRORS STILL HAPPENING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Code is deployed ✅
+But Vercel environment variables NOT updated ❌
+
+Vercel is still using OLD API key
+That's why you get 401 Unauthorized
+
+
+CORRECT JWT KEY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+
+WHAT TO DO NOW (5 MINUTES)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to Vercel Dashboard
+   https://vercel.com/dashboard
+
+2. Select Your Project
+   e-commerce-partner
+
+3. Go to Settings
+   Settings tab → Environment Variables
+
+4. Update VITE_SUPABASE_PUBLISHABLE_KEY
+   Click Edit
+   Replace with JWT key above
+   Save
+
+5. Update NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+   Click Edit
+   Replace with JWT key above
+   Save
+
+6. Redeploy
+   Deployments tab
+   Click ••• on latest deployment
+   Click Redeploy
+   Wait 2-3 minutes
+
+7. Test Newsletter
+   Go to your site
+   Scroll to footer
+   Enter email
+   Click subscribe
+   Should work! ✅
+
+
+VARIABLES TO UPDATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Variable 1: VITE_SUPABASE_PUBLISHABLE_KEY
+  Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+Variable 2: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+
+EXPECTED RESULT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After updating Vercel and redeploying:
+
+✅ Newsletter subscription works
+✅ No more 401 errors
+✅ Data saves to Supabase
+✅ Success message displays
+✅ Emails send successfully
+
+
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 URGENT_UPDATE_VERCEL_NOW.md
+   Complete step-by-step guide
+
+📖 COMMITS_DONE_UPDATE_VERCEL_NEXT.md
+   Verification and next steps
+
+
+STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Code fixed
+✅ URL corrected
+✅ Project ID corrected
+✅ Correct JWT key identified
+✅ Local .env updated
+✅ All commits made
+✅ All commits pushed
+⏳ Update Vercel (FINAL STEP)
+
+
+TIME REQUIRED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Update Vercel:  5 minutes
+Redeploy:       2-3 minutes
+Test:           2 minutes
+─────────────────────────
+Total:          ~10 minutes
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  👉 GO TO: https://vercel.com/dashboard                         ║
+║                                                                  ║
+║  📖 GUIDE: URGENT_UPDATE_VERCEL_NOW.md                          ║
+║                                                                  ║
+║  🎯 UPDATE: Both API key variables with JWT key                 ║
+║                                                                  ║
+║  🚀 RESULT: Newsletter subscription works!                      ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝

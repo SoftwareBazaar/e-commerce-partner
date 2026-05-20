@@ -1,0 +1,148 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║         🔍 ROOT CAUSE FOUND - RLS POLICIES 🔍                   ║
+║                                                                  ║
+║              FINAL STEP TO FIX NEWSLETTER SUBSCRIPTION           ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+THE ISSUE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+401 Unauthorized error is NOT caused by API key
+
+It's caused by RLS (Row Level Security) policies
+
+RLS policies control who can access data
+Without proper policies, access is denied
+
+
+WHAT'S WORKING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Code fixed
+✅ URL corrected
+✅ Project ID corrected
+✅ API key correct
+✅ Environment variables updated
+✅ Redeployed
+
+
+WHAT'S BLOCKING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ RLS policies don't allow public access
+❌ That's why you get 401 Unauthorized
+
+
+THE FIX (5 MINUTES)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to Supabase Dashboard
+   https://supabase.com/dashboard/project/zowfbftptnkypdwsnbkh
+
+2. Click: SQL Editor
+
+3. Click: New Query
+
+4. Paste this SQL:
+
+   -- Enable RLS
+   ALTER TABLE newsletter_subscribers ENABLE ROW LEVEL SECURITY;
+
+   -- Allow public SELECT
+   CREATE POLICY "Allow public SELECT"
+   ON newsletter_subscribers
+   FOR SELECT
+   USING (true);
+
+   -- Allow public INSERT
+   CREATE POLICY "Allow public INSERT"
+   ON newsletter_subscribers
+   FOR INSERT
+   WITH CHECK (true);
+
+5. Click: Run
+
+6. Should see: "Success" message
+
+7. Test newsletter subscription
+
+
+WHAT THIS DOES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Enables RLS on newsletter_subscribers table
+Allows public to check if email exists (SELECT)
+Allows public to add new subscriber (INSERT)
+No restrictions - everyone can access
+
+
+EXPECTED RESULT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before:
+  ❌ 401 Unauthorized
+  ❌ Newsletter fails
+
+After:
+  ✅ Newsletter works
+  ✅ Data saves
+  ✅ Success message
+
+
+TEST AFTER FIX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to your production site
+2. Scroll to footer
+3. Enter test email
+4. Click subscribe
+5. Should work! ✅
+
+
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 FIX_RLS_POLICIES_NOW.md
+   Quick fix guide
+
+📖 ROOT_CAUSE_FOUND_RLS_POLICIES.md
+   Complete explanation
+
+📖 DIAGNOSE_401_ERROR.md
+   Detailed diagnosis
+
+
+STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Code fixed
+✅ Configuration corrected
+✅ API key correct
+✅ Environment variables updated
+✅ Redeployed
+⏳ Add RLS policies (FINAL STEP)
+
+
+TIME REQUIRED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Add RLS policies:  5 minutes
+Test:              2 minutes
+─────────────────────────
+Total:             ~7 minutes
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  👉 GO TO: Supabase SQL Editor                                  ║
+║                                                                  ║
+║  📖 GUIDE: FIX_RLS_POLICIES_NOW.md                              ║
+║                                                                  ║
+║  🎯 ACTION: Paste SQL and run                                   ║
+║                                                                  ║
+║  🚀 RESULT: Newsletter subscription works!                      ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝

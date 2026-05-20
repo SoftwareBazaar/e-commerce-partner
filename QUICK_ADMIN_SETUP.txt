@@ -1,0 +1,168 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║              🔐 QUICK ADMIN SETUP GUIDE 🔐                      ║
+║                                                                  ║
+║              3 STEPS TO CREATE ADMIN ACCOUNT                     ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+STEP 1: CREATE user_roles TABLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to Supabase SQL Editor
+   https://supabase.com/dashboard/project/zowfbftptnkypdwsnbkh
+
+2. Click: New Query
+
+3. Paste this SQL:
+
+   CREATE TABLE IF NOT EXISTS public.user_roles (
+     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+     user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+     role text NOT NULL CHECK (role IN ('admin', 'user')),
+     created_at timestamptz NOT NULL DEFAULT now(),
+     UNIQUE(user_id, role)
+   );
+
+   ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
+
+   CREATE POLICY "Users can read own roles" ON public.user_roles
+     FOR SELECT USING (auth.uid() = user_id);
+
+4. Click: Run
+
+5. Should see: "Success"
+
+
+STEP 2: CREATE ADMIN USER ACCOUNT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A: Via Website (Easiest)
+
+1. Go to: https://your-domain.com/auth
+2. Click: Create Account
+3. Enter: Email and password
+4. Click: Create Account
+5. You're logged in!
+
+Option B: Via Supabase Dashboard
+
+1. Go to Supabase Authentication → Users
+2. Click: Add user
+3. Enter: Email and password
+4. Click: Create user
+
+
+STEP 3: GRANT ADMIN ROLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to Supabase SQL Editor
+
+2. Paste this SQL (replace admin@example.com with actual email):
+
+   WITH user_data AS (
+     SELECT id FROM auth.users WHERE email = 'admin@example.com'
+   )
+   INSERT INTO public.user_roles (user_id, role)
+   SELECT id, 'admin' FROM user_data
+   ON CONFLICT (user_id, role) DO NOTHING;
+
+3. Click: Run
+
+4. Should see: "Success"
+
+
+HOW TO LOGIN & ACCESS ADMIN PANEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://your-domain.com/auth
+2. Click: Sign In
+3. Enter: Email and password
+4. Click: Sign In
+5. Go to: https://your-domain.com/admin
+6. You should see Admin Panel!
+
+
+ADMIN PANEL FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Products Tab
+   - Create, edit, delete products
+   - Upload images
+   - Set prices
+   - Mark as featured
+
+✅ Orders Tab
+   - View all orders
+   - Change order status
+   - See customer details
+
+✅ EA Requests Tab
+   - View custom EA requests
+   - Change status
+   - See strategy details
+
+✅ Bookings Tab
+   - View bookings
+   - Change status
+   - See booking details
+
+✅ Messages Tab
+   - View contact messages
+   - See customer inquiries
+
+✅ Blog Tab
+   - Create blog posts
+   - Edit posts
+   - Publish/unpublish
+
+✅ Subscribers Tab
+   - View newsletter subscribers
+   - See subscription dates
+
+
+ADMIN PANEL URL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+https://your-domain.com/admin
+
+(Only accessible after login with admin role)
+
+
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Can't access admin panel?
+   → Check user has admin role in user_roles table
+   → Try logging out and back in
+   → Refresh page
+
+❌ Can't create account?
+   → Check email is valid
+   → Check password is 6+ characters
+   → Check Supabase auth is enabled
+
+❌ Products not showing?
+   → Check products table exists
+   → Check products are marked as active
+
+
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 ADMIN_SETUP_GUIDE.md
+   Complete setup and usage guide
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  SUMMARY:                                                        ║
+║  1. Create user_roles table (SQL)                               ║
+║  2. Create admin account (sign up)                              ║
+║  3. Grant admin role (SQL)                                      ║
+║  4. Login and access admin panel                                ║
+║                                                                  ║
+║  Time: ~10 minutes                                              ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝

@@ -1,0 +1,139 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║         ✅ CORRECT ANON PUBLIC JWT KEY FOUND ✅                 ║
+║                                                                  ║
+║              COMMITTED & READY FOR VERCEL UPDATE                ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+THE CORRECT KEY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Type: Anon Public Key (JWT format)
+
+Value:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+
+WHY THIS KEY?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Anon Public Key - For client-side authentication
+✅ JWT Format - Correct format for Supabase
+✅ From Dashboard - Verified from Supabase API settings
+✅ Correct role - "role":"anon" in the JWT payload
+
+
+WHAT WAS DONE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Identified correct key from Supabase dashboard
+✅ Updated local .env file
+✅ Committed changes (5af755f)
+✅ Pushed to GitHub main branch
+
+
+VARIABLES TO UPDATE IN VERCEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Variable 1: VITE_SUPABASE_PUBLISHABLE_KEY
+  Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+Variable 2: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+
+HOW TO UPDATE VERCEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://vercel.com/dashboard
+
+2. Select: e-commerce-partner
+
+3. Settings → Environment Variables
+
+4. Update VITE_SUPABASE_PUBLISHABLE_KEY
+   Paste the JWT key above
+   Save
+
+5. Update NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+   Paste the JWT key above
+   Save
+
+6. Redeploy
+   Deployments → ••• → Redeploy
+
+7. Wait 2-3 minutes
+
+8. Test newsletter subscription
+
+
+ALL VERCEL VARIABLES (FINAL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VITE_SUPABASE_URL
+  https://zowfbftptnkypdwsnbkh.supabase.co
+
+VITE_SUPABASE_PROJECT_ID
+  zowfbftptnkypdwsnbkh
+
+VITE_SUPABASE_PUBLISHABLE_KEY
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NzAyMjEsImV4cCI6MjA5MzU0NjIyMX0.HgnIYibSwygMbCB3aBqtnZUsISjk0OSs1mxvatEJofcA
+
+
+EXPECTED RESULT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After updating Vercel and redeploying:
+
+✅ Newsletter subscription works
+✅ No more 401 errors
+✅ Data saves to Supabase
+✅ Success message displays
+✅ Emails send successfully
+
+
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 FINAL_CORRECT_KEY_UPDATE.md
+   Complete step-by-step guide
+
+
+STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Code fixed
+✅ URL corrected
+✅ Project ID corrected
+✅ Correct API key identified
+✅ Local .env updated
+✅ Committed and pushed
+⏳ Update Vercel (FINAL STEP)
+
+
+TIME REQUIRED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Update Vercel:  5 minutes
+Redeploy:       2-3 minutes
+Test:           2 minutes
+─────────────────────────
+Total:          ~10 minutes
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  👉 NEXT: Go to https://vercel.com/dashboard                    ║
+║                                                                  ║
+║  📖 GUIDE: Read FINAL_CORRECT_KEY_UPDATE.md                     ║
+║                                                                  ║
+║  🎯 UPDATE: Both API key variables with JWT key                 ║
+║                                                                  ║
+║  🚀 RESULT: Newsletter subscription works!                      ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝

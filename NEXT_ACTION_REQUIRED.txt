@@ -1,0 +1,73 @@
+╔══════════════════════════════════════════════════════════════╗
+║              🎯 NEXT ACTION - UPDATE API KEY 🎯              ║
+╚══════════════════════════════════════════════════════════════╝
+
+CURRENT STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✅ Code fixed and deployed
+  ✅ URL corrected: zowfbftptnkypdwsnbkh.supabase.co
+  ✅ Project ID corrected: zowfbftptnkypdwsnbkh
+  ❌ API Key needs update (causing 401 error)
+
+WHAT TO DO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTION 1: Dashboard (Easiest - 5 min)
+  1. Go to: https://vercel.com/dashboard
+  2. Select: e-commerce-partner
+  3. Settings → Environment Variables
+  4. Edit: VITE_SUPABASE_PUBLISHABLE_KEY
+  5. Paste new value (see below)
+  6. Save
+  7. Deployments → ••• → Redeploy
+
+OPTION 2: Git Trigger (Fastest - 2 min)
+  cd e-commerce-partner-main
+  git commit --allow-empty -m "chore: trigger redeploy"
+  git push origin main
+  (Then update API key in dashboard while it redeploys)
+
+OPTION 3: CLI (Automated - 5 min)
+  vercel login
+  cd e-commerce-partner-main
+  vercel link
+  vercel env rm VITE_SUPABASE_PUBLISHABLE_KEY production
+  vercel env add VITE_SUPABASE_PUBLISHABLE_KEY production
+  (Paste value when prompted)
+  vercel --prod
+
+OPTION 4: Script (Automated - 3 min)
+  Windows: UPDATE_API_KEY_VERCEL.bat
+  Mac/Linux: ./UPDATE_API_KEY_VERCEL.sh
+
+NEW API KEY VALUE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Variable: VITE_SUPABASE_PUBLISHABLE_KEY
+
+Value (copy exactly):
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpvd2ZiZnRwdG5reXBkd3NuYmtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NjM4NTUsImV4cCI6MjA5MzMzOTg1NX0.qtE931OtEmApjvaoeKnB3Cffy4C9Mn_cDTJcsGIKHGE
+
+AFTER UPDATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  1. Redeploy (2-3 minutes)
+  2. Test newsletter subscription
+  3. Should work! ✅
+
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📖 FINAL_API_KEY_UPDATE_GUIDE.md (detailed instructions)
+  📖 FIX_API_KEY_NOW.md (quick reference)
+  📖 API_KEY_FIX_REQUIRED.txt (this file)
+
+ESTIMATED TIME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Update: 5 minutes
+  Redeploy: 2-3 minutes
+  Test: 2 minutes
+  ─────────────────
+  Total: ~10 minutes
+
+╔══════════════════════════════════════════════════════════════╗
+║  Pick an option above and execute it!                        ║
+║  This is the FINAL STEP to fix newsletter subscription! 🚀   ║
+╚══════════════════════════════════════════════════════════════╝
