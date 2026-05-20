@@ -27,7 +27,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
   orderConfirmation: {
     id: "order-confirmation",
     name: "Order Confirmation",
-    subject: "Your Order Confirmation - Robert Trading Tools",
+    subject: "Your Order Confirmation - NeuroAlgo Forex Edge",
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Order Confirmation</h2>' +
       '<p>Hi ' + '{{customerName}}' + ',</p>' +
@@ -46,7 +46,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
   customEARequest: {
     id: "custom-ea-request",
     name: "Custom EA Request Received",
-    subject: "Your Custom EA Request - Robert Trading Tools",
+    subject: "Your Custom EA Request - NeuroAlgo Forex Edge",
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Custom EA Request Received</h2>' +
       '<p>Hi ' + '{{clientName}}' + ',</p>' +
@@ -65,7 +65,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
   bookingConfirmation: {
     id: "booking-confirmation",
     name: "Booking Confirmation",
-    subject: "Your Booking Confirmation - Robert Trading Tools",
+    subject: "Your Booking Confirmation - NeuroAlgo Forex Edge",
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Booking Confirmation</h2>' +
       '<p>Hi ' + '{{clientName}}' + ',</p>' +
@@ -84,7 +84,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
   contactFormSubmission: {
     id: "contact-form",
     name: "Contact Form Submission",
-    subject: "We Received Your Message - Robert Trading Tools",
+    subject: "We Received Your Message - NeuroAlgo Forex Edge",
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Message Received</h2>' +
       '<p>Hi ' + '{{senderName}}' + ',</p>' +
@@ -101,7 +101,7 @@ export const emailTemplates: Record<string, EmailTemplate> = {
   downloadLink: {
     id: "download-link",
     name: "Download Link",
-    subject: "Your Download Link - Robert Trading Tools",
+    subject: "Your Download Link - NeuroAlgo Forex Edge",
     htmlContent: '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">' +
       '<h2>Your Download is Ready</h2>' +
       '<p>Hi ' + '{{customerName}}' + ',</p>' +
@@ -187,7 +187,7 @@ export async function sendEmailNotification(
         to: notification.recipientEmail,
         subject,
         html: htmlContent,
-        from: import.meta.env.VITE_SENDGRID_FROM_EMAIL || "neuroalgoforexedge@gmail.com",
+        from: import.meta.env.VITE_SENDGRID_FROM_EMAIL || "noreply@neuroalgoforex.com",
       },
     });
 
