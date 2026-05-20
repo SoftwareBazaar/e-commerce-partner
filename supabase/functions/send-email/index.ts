@@ -53,7 +53,7 @@ serve(async (req) => {
         },
       ],
       from: {
-        email: emailRequest.from || "noreply@neuroalgoforex.com",
+        email: emailRequest.from || "noreply@neuroalgofxedge.com",
         name: "NeuroAlgo Forex Edge",
       },
       content: [
@@ -69,7 +69,7 @@ serve(async (req) => {
         ],
       }),
       replyTo: {
-        email: emailRequest.replyTo || "support@neuroalgoforex.com",
+        email: emailRequest.replyTo || "support@neuroalgofxedge.com",
         name: "NeuroAlgo Support",
       },
       // Add headers for better email authentication
