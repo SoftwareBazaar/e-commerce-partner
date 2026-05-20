@@ -44,7 +44,7 @@ serve(async (req) => {
       );
     }
 
-    // Prepare SendGrid payload
+    // Prepare SendGrid payload with proper email authentication headers
     const payload = {
       personalizations: [
         {
@@ -53,8 +53,8 @@ serve(async (req) => {
         },
       ],
       from: {
-        email: emailRequest.from || "neuroalgoforexedge@gmail.com",
-        name: "Robert Trading Tools",
+        email: emailRequest.from || "noreply@neuroalgoforex.com",
+        name: "NeuroAlgo Forex Edge",
       },
       content: [
         {
@@ -68,11 +68,16 @@ serve(async (req) => {
           { type: "text/html", value: emailRequest.html },
         ],
       }),
-      ...(emailRequest.replyTo && {
-        replyTo: {
-          email: emailRequest.replyTo,
-        },
-      }),
+      replyTo: {
+        email: emailRequest.replyTo || "support@neuroalgoforex.com",
+        name: "NeuroAlgo Support",
+      },
+      // Add headers for better email authentication
+      headers: {
+        "X-Priority": "3",
+        "X-Mailer": "NeuroAlgo Booking System",
+        "List-Unsubscribe": "<mailto:unsubscribe@neuroalgoforex.com>",
+      },
     };
 
     // Send via SendGrid
