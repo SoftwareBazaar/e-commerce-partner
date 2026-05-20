@@ -25,6 +25,36 @@ type Product = {
   active?: boolean;
 };
 
+type SiteSettings = {
+  id?: string;
+  company_name?: string;
+  company_email?: string;
+  phone?: string;
+  address?: string;
+  currency?: string;
+  timezone?: string;
+  logo_url?: string;
+  footer_text?: string;
+  social_links?: Record<string, string>;
+};
+
+type PageContent = {
+  id?: string;
+  page_slug: string;
+  title: string;
+  content: string;
+  is_published?: boolean;
+};
+
+type FAQ = {
+  id?: string;
+  question: string;
+  answer: string;
+  category?: string;
+  order?: number;
+  is_active?: boolean;
+};
+
 const emptyProduct: Product = {
   slug: "",
   name: "",
@@ -133,12 +163,19 @@ const Admin = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [subs, setSubs] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [settings, setSettings] = useState<SiteSettings>({});
+  const [pageContents, setPageContents] = useState<PageContent[]>([]);
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [editing, setEditing] = useState<Product | null>(null);
   const [editingPost, setEditingPost] = useState<any | null>(null);
+  const [editingSettings, setEditingSettings] = useState(false);
+  const [editingPage, setEditingPage] = useState<PageContent | null>(null);
+  const [editingFaq, setEditingFaq] = useState<FAQ | null>(null);
 
   const refresh = async () => {
     try {
-      const [p, r, b, m, o, bp, ns] = await Promise.all([
+      const [p, r, b, m, o, bp, ns, u, sc, pc, f] = await Promise.all([
         supabase.from("products").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
         supabase.from("ea_requests").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
         supabase.from("bookings").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
@@ -146,6 +183,10 @@ const Admin = () => {
         supabase.from("orders").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
         supabase.from("blog_posts").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
         supabase.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("profiles").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("site_settings").select("*").maybeSingle().catch(() => ({ data: null })),
+        supabase.from("page_contents").select("*").order("created_at", { ascending: false }).catch(() => ({ data: [] })),
+        supabase.from("faqs").select("*").order("order", { ascending: true }).catch(() => ({ data: [] })),
       ]);
       setProducts(p.data ?? []);
       setRequests(r.data ?? []);
@@ -154,6 +195,10 @@ const Admin = () => {
       setOrders(o.data ?? []);
       setPosts(bp.data ?? []);
       setSubs(ns.data ?? []);
+      setUsers(u.data ?? []);
+      setSettings(sc.data ?? {});
+      setPageContents(pc.data ?? []);
+      setFaqs(f.data ?? []);
     } catch (err) {
       console.error("Error refreshing admin data:", err);
     }
@@ -197,6 +242,71 @@ const Admin = () => {
     refresh();
   };
 
+  const saveSettings = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      company_name: String(fd.get("company_name")),
+      company_email: String(fd.get("company_email")),
+      phone: String(fd.get("phone")),
+      address: String(fd.get("address")),
+      currency: String(fd.get("currency")),
+      timezone: String(fd.get("timezone")),
+      logo_url: String(fd.get("logo_url")) || null,
+      footer_text: String(fd.get("footer_text")),
+    };
+    const { error } = settings.id
+      ? await supabase.from("site_settings").update(payload).eq("id", settings.id)
+      : await supabase.from("site_settings").insert(payload);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: "Settings saved" }); setEditingSettings(false); refresh(); }
+  };
+
+  const savePage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      page_slug: String(fd.get("page_slug")),
+      title: String(fd.get("title")),
+      content: String(fd.get("content")),
+      is_published: fd.get("is_published") === "on",
+    };
+    const { error } = editingPage?.id
+      ? await supabase.from("page_contents").update(payload).eq("id", editingPage.id)
+      : await supabase.from("page_contents").insert(payload);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: "Page saved" }); setEditingPage(null); refresh(); }
+  };
+
+  const saveFaq = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      question: String(fd.get("question")),
+      answer: String(fd.get("answer")),
+      category: String(fd.get("category")) || null,
+      order: Number(fd.get("order")) || 0,
+      is_active: fd.get("is_active") === "on",
+    };
+    const { error } = editingFaq?.id
+      ? await supabase.from("faqs").update(payload).eq("id", editingFaq.id)
+      : await supabase.from("faqs").insert(payload);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: "FAQ saved" }); setEditingFaq(null); refresh(); }
+  };
+
+  const deletePage = async (id: string) => {
+    if (!confirm("Delete this page content?")) return;
+    await supabase.from("page_contents").delete().eq("id", id);
+    refresh();
+  };
+
+  const deleteFaq = async (id: string) => {
+    if (!confirm("Delete this FAQ?")) return;
+    await supabase.from("faqs").delete().eq("id", id);
+    refresh();
+  };
+
   return (
     <section className="py-12">
       <div className="container-tight">
@@ -236,15 +346,20 @@ const Admin = () => {
           </DialogContent>
         </Dialog>
 
-        <Tabs defaultValue="products">
+        <Tabs defaultValue="dashboard">
           <TabsList className="flex-wrap h-auto">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
             <TabsTrigger value="orders">Orders ({orders.length})</TabsTrigger>
             <TabsTrigger value="requests">EA Requests ({requests.length})</TabsTrigger>
             <TabsTrigger value="bookings">Bookings ({bookings.length})</TabsTrigger>
             <TabsTrigger value="messages">Messages ({messages.length})</TabsTrigger>
             <TabsTrigger value="blog">Blog ({posts.length})</TabsTrigger>
+            <TabsTrigger value="users">Users ({users.length})</TabsTrigger>
+            <TabsTrigger value="content">Content ({pageContents.length})</TabsTrigger>
+            <TabsTrigger value="faqs">FAQs ({faqs.length})</TabsTrigger>
             <TabsTrigger value="subs">Subscribers ({subs.length})</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="mt-6 space-y-3">
@@ -362,6 +477,155 @@ const Admin = () => {
               </div>
             ))}
           </TabsContent>
+
+          <TabsContent value="dashboard" className="mt-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="rounded-xl border border-border bg-gradient-card p-4">
+                <p className="text-xs text-muted-foreground">Total Products</p>
+                <p className="text-2xl font-bold mt-2">{products.length}</p>
+              </div>
+              <div className="rounded-xl border border-border bg-gradient-card p-4">
+                <p className="text-xs text-muted-foreground">Total Orders</p>
+                <p className="text-2xl font-bold mt-2">{orders.length}</p>
+              </div>
+              <div className="rounded-xl border border-border bg-gradient-card p-4">
+                <p className="text-xs text-muted-foreground">Active Users</p>
+                <p className="text-2xl font-bold mt-2">{users.length}</p>
+              </div>
+              <div className="rounded-xl border border-border bg-gradient-card p-4">
+                <p className="text-xs text-muted-foreground">Pending Bookings</p>
+                <p className="text-2xl font-bold mt-2">{bookings.filter(b => b.status === 'pending').length}</p>
+              </div>
+            </div>
+            <div className="rounded-xl border border-border bg-gradient-card p-6">
+              <h3 className="font-semibold mb-4">Admin Quick Actions</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <Button onClick={() => setEditing(emptyProduct)} className="bg-gradient-primary text-primary-foreground"><Plus className="h-4 w-4 mr-1.5" />New Product</Button>
+                <Button onClick={() => setEditingPost({ slug: "", title: "", body: "", excerpt: "", cover_url: "", published: false })} className="bg-gradient-primary text-primary-foreground"><Plus className="h-4 w-4 mr-1.5" />New Post</Button>
+                <Button onClick={() => setEditingPage({ page_slug: "", title: "", content: "" })} className="bg-gradient-primary text-primary-foreground"><Plus className="h-4 w-4 mr-1.5" />New Page</Button>
+                <Button onClick={() => setEditingFaq({ question: "", answer: "" })} className="bg-gradient-primary text-primary-foreground"><Plus className="h-4 w-4 mr-1.5" />New FAQ</Button>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="users" className="mt-6 space-y-3">
+            {users.length === 0 && <p className="text-muted-foreground text-sm">No users yet.</p>}
+            {users.map((u) => (
+              <div key={u.id} className="flex justify-between items-start gap-3 rounded-xl border border-border bg-gradient-card p-4">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold">{u.display_name || u.email}</p>
+                  <p className="text-xs text-muted-foreground">{u.email}</p>
+                  {u.phone && <p className="text-xs text-muted-foreground">{u.phone}</p>}
+                  {u.country && <p className="text-xs text-muted-foreground">{u.country}</p>}
+                  <p className="text-xs text-muted-foreground mt-1">{new Date(u.created_at).toLocaleDateString()}</p>
+                </div>
+                <Badge variant={u.is_active ? "default" : "secondary"}>{u.is_active ? "Active" : "Inactive"}</Badge>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="content" className="mt-6 space-y-3">
+            <Button onClick={() => setEditingPage({ page_slug: "", title: "", content: "" })} className="bg-gradient-primary text-primary-foreground">
+              <Plus className="h-4 w-4 mr-1.5" /> New Page
+            </Button>
+            {pageContents.length === 0 && <p className="text-muted-foreground text-sm">No pages yet.</p>}
+            {pageContents.map((pc) => (
+              <div key={pc.id} className="flex justify-between items-center gap-3 rounded-xl border border-border bg-gradient-card p-4">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold">{pc.title}</p>
+                  <p className="text-xs text-muted-foreground">/{pc.page_slug}</p>
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Badge variant={pc.is_published ? "default" : "secondary"}>{pc.is_published ? "Published" : "Draft"}</Badge>
+                  <Button variant="ghost" size="icon" onClick={() => setEditingPage(pc)}><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => deletePage(pc.id!)}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="faqs" className="mt-6 space-y-3">
+            <Button onClick={() => setEditingFaq({ question: "", answer: "" })} className="bg-gradient-primary text-primary-foreground">
+              <Plus className="h-4 w-4 mr-1.5" /> New FAQ
+            </Button>
+            {faqs.length === 0 && <p className="text-muted-foreground text-sm">No FAQs yet.</p>}
+            {faqs.map((f) => (
+              <div key={f.id} className="flex justify-between items-start gap-3 rounded-xl border border-border bg-gradient-card p-4">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold">{f.question}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{f.answer.slice(0, 150)}{f.answer.length > 150 && "..."}</p>
+                  {f.category && <Badge variant="outline" className="mt-2">{f.category}</Badge>}
+                </div>
+                <div className="flex gap-1 shrink-0">
+                  <Badge variant={f.is_active ? "default" : "secondary"}>{f.is_active ? "Active" : "Inactive"}</Badge>
+                  <Button variant="ghost" size="icon" onClick={() => setEditingFaq(f)}><Pencil className="h-4 w-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => deleteFaq(f.id!)}><Trash2 className="h-4 w-4" /></Button>
+                </div>
+              </div>
+            ))}
+          </TabsContent>
+
+          <TabsContent value="settings" className="mt-6">
+            <div className="rounded-xl border border-border bg-gradient-card p-6 max-w-2xl">
+              <h3 className="font-semibold mb-4">Site Settings</h3>
+              <form onSubmit={saveSettings} className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><Label>Company Name</Label><Input name="company_name" defaultValue={settings.company_name ?? ""} className="mt-1 bg-input" /></div>
+                  <div><Label>Company Email</Label><Input name="company_email" defaultValue={settings.company_email ?? ""} className="mt-1 bg-input" /></div>
+                  <div><Label>Phone</Label><Input name="phone" defaultValue={settings.phone ?? ""} className="mt-1 bg-input" /></div>
+                  <div><Label>Currency</Label>
+                    <select name="currency" defaultValue={settings.currency ?? "USD"} className="mt-1 w-full h-10 rounded-md border border-border bg-input px-3 text-sm">
+                      <option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>AUD</option>
+                    </select>
+                  </div>
+                </div>
+                <div><Label>Address</Label><Input name="address" defaultValue={settings.address ?? ""} className="mt-1 bg-input" /></div>
+                <div><Label>Timezone</Label>
+                  <select name="timezone" defaultValue={settings.timezone ?? "UTC"} className="mt-1 w-full h-10 rounded-md border border-border bg-input px-3 text-sm">
+                    <option>UTC</option><option>EST</option><option>CST</option><option>MST</option><option>PST</option><option>GMT</option><option>CET</option><option>IST</option><option>JST</option>
+                  </select>
+                </div>
+                <div><Label>Logo URL</Label><Input name="logo_url" defaultValue={settings.logo_url ?? ""} className="mt-1 bg-input" /></div>
+                <div><Label>Footer Text</Label><Textarea name="footer_text" defaultValue={settings.footer_text ?? ""} className="mt-1 bg-input" rows={3} /></div>
+                <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">Save Settings</Button>
+              </form>
+            </div>
+          </TabsContent>
+
+          <Dialog open={!!editingPage} onOpenChange={(o) => !o && setEditingPage(null)}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader><DialogTitle>{editingPage?.id ? "Edit Page" : "New Page"}</DialogTitle></DialogHeader>
+              {editingPage && (
+                <form onSubmit={savePage} className="space-y-3">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div><Label>Page Slug</Label><Input name="page_slug" required defaultValue={editingPage.page_slug} className="mt-1 bg-input" /></div>
+                    <div><Label>Page Title</Label><Input name="title" required defaultValue={editingPage.title} className="mt-1 bg-input" /></div>
+                  </div>
+                  <div><Label>Content (HTML or Markdown)</Label><Textarea name="content" required rows={10} defaultValue={editingPage.content} className="mt-1 bg-input font-mono text-xs" /></div>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_published" defaultChecked={editingPage.is_published} /> Published</label>
+                  <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">Save Page</Button>
+                </form>
+              )}
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={!!editingFaq} onOpenChange={(o) => !o && setEditingFaq(null)}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader><DialogTitle>{editingFaq?.id ? "Edit FAQ" : "New FAQ"}</DialogTitle></DialogHeader>
+              {editingFaq && (
+                <form onSubmit={saveFaq} className="space-y-3">
+                  <div><Label>Question</Label><Input name="question" required defaultValue={editingFaq.question} className="mt-1 bg-input" /></div>
+                  <div><Label>Answer</Label><Textarea name="answer" required rows={6} defaultValue={editingFaq.answer} className="mt-1 bg-input" /></div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div><Label>Category</Label><Input name="category" defaultValue={editingFaq.category ?? ""} className="mt-1 bg-input" placeholder="e.g., General, Technical, Pricing" /></div>
+                    <div><Label>Order</Label><Input type="number" name="order" defaultValue={editingFaq.order ?? 0} className="mt-1 bg-input" /></div>
+                  </div>
+                  <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="is_active" defaultChecked={editingFaq.is_active !== false} /> Active</label>
+                  <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground">Save FAQ</Button>
+                </form>
+              )}
+            </DialogContent>
+          </Dialog>
         </Tabs>
       </div>
     </section>
