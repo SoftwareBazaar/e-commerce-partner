@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Mail, MessageCircle, Send, Twitter, Youtube } from "lucide-react";
+import { useState } from "react";
+import { Facebook, Instagram, Mail, MessageCircle, Send, Twitter, Youtube, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Brand } from "@/components/Brand";
 import { BRAND, SOCIALS } from "@/data/site";
+import { cn } from "@/lib/utils";
 
 const SocialLink = ({ href, label, children }: { href: string; label: string; children: React.ReactNode }) => (
   <a
@@ -17,11 +19,47 @@ const SocialLink = ({ href, label, children }: { href: string; label: string; ch
   </a>
 );
 
+interface CollapsibleSectionProps {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+const CollapsibleSection = ({ title, children, defaultOpen = true }: CollapsibleSectionProps) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full lg:pointer-events-none lg:cursor-default flex items-center justify-between font-display text-sm font-semibold uppercase tracking-wider text-foreground mb-4 hover:text-primary lg:hover:text-foreground transition-colors"
+        aria-expanded={isOpen}
+      >
+        <span>{title}</span>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 transition-transform duration-200 lg:hidden",
+            isOpen ? "rotate-180" : ""
+          )}
+        />
+      </button>
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300 ease-in-out",
+          isOpen ? "max-h-96" : "max-h-0 lg:max-h-96"
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
 export const Footer = () => {
   return (
     <footer className="relative border-t border-border bg-card/40 mt-24">
       <div className="container-tight py-16">
-        <div className="grid gap-12 lg:grid-cols-4">
+        <div className="grid gap-8 lg:gap-12 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center" aria-label={`${BRAND.full} home`}>
               <Brand size={64} />
@@ -103,33 +141,35 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground mb-4">Explore</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/marketplace" className="hover:text-primary">Marketplace</Link></li>
-              <li><Link to="/custom-ea" className="hover:text-primary">Custom EA Request</Link></li>
-              <li><Link to="/mentorship" className="hover:text-primary">Mentorship</Link></li>
-              <li><Link to="/booking" className="hover:text-primary">Book a Call</Link></li>
-              <li><Link to="/blog" className="hover:text-primary">Blog</Link></li>
-              <li><Link to="/affiliate" className="hover:text-primary">Affiliate Program</Link></li>
-              <li><Link to="/about" className="hover:text-primary">About</Link></li>
-              <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
-            </ul>
+            <CollapsibleSection title="Explore" defaultOpen={true}>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link to="/marketplace" className="block py-1 hover:text-primary transition-colors">Marketplace</Link></li>
+                <li><Link to="/custom-ea" className="block py-1 hover:text-primary transition-colors">Custom EA Request</Link></li>
+                <li><Link to="/mentorship" className="block py-1 hover:text-primary transition-colors">Mentorship</Link></li>
+                <li><Link to="/booking" className="block py-1 hover:text-primary transition-colors">Book a Call</Link></li>
+                <li><Link to="/blog" className="block py-1 hover:text-primary transition-colors">Blog</Link></li>
+                <li><Link to="/affiliate" className="block py-1 hover:text-primary transition-colors">Affiliate Program</Link></li>
+                <li><Link to="/about" className="block py-1 hover:text-primary transition-colors">About</Link></li>
+                <li><Link to="/contact" className="block py-1 hover:text-primary transition-colors">Contact</Link></li>
+              </ul>
+            </CollapsibleSection>
           </div>
 
           <div>
-            <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-foreground mb-4">Connect</h3>
-            <div className="flex flex-wrap gap-2">
-              <SocialLink href={SOCIALS.whatsapp} label="WhatsApp"><MessageCircle className="h-4 w-4" /></SocialLink>
-              <SocialLink href={SOCIALS.telegram} label="Telegram"><Send className="h-4 w-4" /></SocialLink>
-              <SocialLink href={SOCIALS.instagram} label="Instagram"><Instagram className="h-4 w-4" /></SocialLink>
-              <SocialLink href={SOCIALS.youtube} label="YouTube"><Youtube className="h-4 w-4" /></SocialLink>
-              <SocialLink href={SOCIALS.twitter} label="Twitter"><Twitter className="h-4 w-4" /></SocialLink>
-              <SocialLink href={SOCIALS.facebook} label="Facebook"><Facebook className="h-4 w-4" /></SocialLink>
-              <SocialLink href={`mailto:${SOCIALS.email}`} label="Email"><Mail className="h-4 w-4" /></SocialLink>
-            </div>
-            <p className="mt-6 text-xs text-muted-foreground">
-              {SOCIALS.email}
-            </p>
+            <CollapsibleSection title="Connect" defaultOpen={true}>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <SocialLink href={SOCIALS.whatsapp} label="WhatsApp"><MessageCircle className="h-4 w-4" /></SocialLink>
+                <SocialLink href={SOCIALS.telegram} label="Telegram"><Send className="h-4 w-4" /></SocialLink>
+                <SocialLink href={SOCIALS.instagram} label="Instagram"><Instagram className="h-4 w-4" /></SocialLink>
+                <SocialLink href={SOCIALS.youtube} label="YouTube"><Youtube className="h-4 w-4" /></SocialLink>
+                <SocialLink href={SOCIALS.twitter} label="Twitter"><Twitter className="h-4 w-4" /></SocialLink>
+                <SocialLink href={SOCIALS.facebook} label="Facebook"><Facebook className="h-4 w-4" /></SocialLink>
+                <SocialLink href={`mailto:${SOCIALS.email}`} label="Email"><Mail className="h-4 w-4" /></SocialLink>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {SOCIALS.email}
+              </p>
+            </CollapsibleSection>
           </div>
         </div>
 
