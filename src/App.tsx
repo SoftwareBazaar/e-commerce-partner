@@ -7,6 +7,7 @@ import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { Layout } from "@/components/layout/Layout";
 import { RequireAuth } from "@/components/RequireAuth";
+import ScrollToTop from "@/components/ScrollToTop";
 import Home from "./pages/Home";
 import Marketplace from "./pages/Marketplace";
 import ProductDetail from "./pages/ProductDetail";
@@ -61,6 +62,7 @@ const App = () => {
         <BrowserRouter>
           <AuthProvider>
             <CartProvider>
+              <ScrollToTop />
               <Routes>
                 <Route element={<Layout />}>
                   <Route path="/" element={<Home />} />
